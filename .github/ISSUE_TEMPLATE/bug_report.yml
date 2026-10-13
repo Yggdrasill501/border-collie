@@ -1,0 +1,21 @@
+name: Bug report
+description: Something collie does wrong
+labels: [bug]
+body:
+  - type: textarea
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what collie did instead.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Plugin log
+      description: Output of `herdr plugin log list --plugin collie`.
+      render: shell
+  - type: input
+    attributes:
+      label: Versions
+      description: Output of `herdr --version`, the collie version from `herdr plugin list`, and your OS.
+    validations:
+      required: true

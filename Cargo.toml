@@ -1,8 +1,9 @@
 [package]
 name = "collie"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
-description = "Herdr plugin that keeps spaces sorted by recent use and names tabs after their agents"
+rust-version = "1.89"
+description = "Herdr plugin that keeps spaces sorted by recent use and names tabs and agents after their work"
 license = "MIT"
 
 [dependencies]

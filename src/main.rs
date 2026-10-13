@@ -1,35 +1,74 @@
 //! collie: herdr plugin commands, run by the hooks in `herdr-plugin.toml`.
 
+mod agents;
+mod config;
 mod herdr;
+mod label;
 mod spaces;
+mod state;
 mod tabs;
 
 use std::env;
 use std::process::ExitCode;
 use std::time::Duration;
 
-const USAGE: &str = "usage: collie <startup|focused|name>
+use config::Config;
 
-  focused  move the focused space to the top once it has stayed focused
-  name     rename tabs after their most recently active agent
-  startup  do both immediately";
+const USAGE: &str = "usage: collie <command>
 
-/// How long a space must stay focused before it is promoted.
-fn dwell() -> Duration {
-    let millis = env::var("COLLIE_DWELL_MS")
-        .ok()
-        .and_then(|value| value.parse().ok())
-        .unwrap_or(1000);
-    Duration::from_millis(millis)
+commands:
+  focused    move the focused space to the top once it has stayed focused
+  name       name tabs and agents after what the agents are working on
+  startup    do both immediately
+  --version  print the version";
+
+fn sort_spaces(config: &Config, dwell: Duration) -> herdr::Result<()> {
+    if config.sort_spaces {
+        spaces::promote_focused(dwell)?;
+    }
+    Ok(())
+}
+
+fn name(config: &Config) -> herdr::Result<()> {
+    if !(config.name_tabs || config.name_agents) {
+        return Ok(());
+    }
+    let store = state::Store::open()?;
+    let mut state = store.load();
+    let before = state.clone();
+    let agents = herdr::list("agent.list", "agents")?;
+
+    let tabs = if config.name_tabs {
+        tabs::rename_all(&agents, config.tab_label_max, &mut state.tabs)
+    } else {
+        Ok(())
+    };
+    let agents = if config.name_agents {
+        agents::rename_all(&agents, &mut state.agents)
+    } else {
+        Ok(())
+    };
+    if state != before {
+        store.save(&state)?;
+    }
+    tabs.and(agents)
 }
 
 fn run(command: &str) -> herdr::Result<()> {
     match command {
-        "focused" => spaces::promote_focused(dwell()),
-        "name" => tabs::rename_all(),
+        "--version" | "-V" => {
+            println!("collie {}", env!("CARGO_PKG_VERSION"));
+            Ok(())
+        }
+        "focused" => {
+            let config = config::load();
+            sort_spaces(&config, Duration::from_millis(config.dwell_ms))
+        }
+        "name" => name(&config::load()),
         "startup" => {
-            spaces::promote_focused(Duration::ZERO)?;
-            tabs::rename_all()
+            let config = config::load();
+            let sorted = sort_spaces(&config, Duration::ZERO);
+            name(&config).and(sorted)
         }
         _ => Err(USAGE.into()),
     }

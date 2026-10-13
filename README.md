@@ -1,42 +1,144 @@
 # collie
 
-A [herdr](https://herdr.dev) plugin that keeps your spaces and tabs in order.
+[![CI](https://github.com/Yggdrasill501/collie/actions/workflows/ci.yml/badge.svg)](https://github.com/Yggdrasill501/collie/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-- **Recent spaces on top.** When you switch to a space and stay there for a
-  second, it moves to the top of the list. Space 1 is always the current one
-  and space 2 the one you were in before.
-- **Tabs named after their agents.** A tab takes the terminal title of its most
-  recently active agent, or the working directory name when the title is
-  generic. Tabs you rename yourself are left alone.
+A [herdr](https://herdr.dev) plugin that keeps the herd in order: spaces sorted
+by recent use, and tabs and agents named after the work happening in them.
 
-## Install
+```text
+ before                         after
+ ──────                         ─────
+ spaces   1 ~                   1 meety-clone      ← where you are
+          2 meety               2 meety            ← where you were
+          3 daily-log           3 ~
+          4 meety-clone         4 daily-log
 
-Requires `cargo`. Linux and macOS only.
+ tabs     1 │ 2 │ 3             PR 457 │ Linear tasks needing at… │ meety
+
+ agents   w9:p1                 pr-457
+          w6:p3                 linear-tasks-needing-attention
+```
+
+## Features
+
+- **Recent spaces on top.** Switch to a space, stay a second, and it moves to
+  the top. Space 1 is always the current one and space 2 the one you came
+  from, so jumping back is always the same key.
+- **Tabs named after their agents.** A tab takes the terminal title of its
+  most recently active agent, or the directory name when the title is generic.
+- **Agents named after their work.** Each agent gets a unique name such as
+  `pr-457`, which herdr accepts anywhere it takes an agent:
+  `herdr agent focus pr-457`.
+- **Your names win.** Tabs and agents you rename yourself are never touched.
+- **No background process.** herdr runs a small Rust binary from its event
+  hooks; each run finishes in a few milliseconds.
+
+## Requirements
+
+- herdr 0.9 or newer, on Linux or macOS
+- Rust 1.89 or newer (`cargo`), to build the plugin on install
+
+## Installation
 
 ```bash
 herdr plugin install Yggdrasill501/collie
 ```
 
-For local development, build and link the working tree instead:
+That is all: collie starts working on the next space switch or agent update.
+To apply it to everything immediately:
 
 ```bash
-cargo build --release
-herdr plugin link "$PWD"
+herdr plugin action invoke collie.name
+```
+
+To update, run the install command again. To remove it:
+
+```bash
+herdr plugin uninstall collie
 ```
 
 ## Configuration
 
-| Variable | Default | Meaning |
+collie works without configuration. To change a setting, create `config.toml`
+in the plugin's config directory, which `herdr plugin config-dir collie`
+prints:
+
+```toml
+sort_spaces   = true   # move the focused space to the top
+name_tabs     = true   # name tabs after their agents
+name_agents   = true   # name agents after their work
+dwell_ms      = 1000   # how long a space must stay focused before it moves
+tab_label_max = 24     # longest tab label, in characters
+```
+
+Every line is optional; the values above are the defaults. Changes apply on
+the next hook run, with no reload.
+
+### Suggested keybindings
+
+Sorted spaces pair well with number keys. In herdr's own `config.toml`:
+
+```toml
+[keys]
+switch_workspace = "prefix+1..9"        # prefix+2 is always the previous space
+switch_tab       = "prefix+shift+1..9"
+```
+
+To rename everything on demand:
+
+```toml
+[[keys.command]]
+key = "prefix+shift+c"
+type = "plugin_action"
+command = "collie.name"
+description = "name tabs and agents"
+```
+
+## How names are chosen
+
+| | Source | Example |
 | --- | --- | --- |
-| `COLLIE_DWELL_MS` | `1000` | How long a space must stay focused before it moves to the top. |
+| Tab | Title of the tab's most recently active agent, cut to `tab_label_max` | `Linear tasks needing at…` |
+| Agent | The same title in herdr's name alphabet (`a-z`, `0-9`, `-`), at most 32 characters | `linear-tasks-needing-attention` |
+
+When a title is empty or generic (`Claude Code`), the directory name is used
+instead. Two agents that would get the same name become `meety` and `meety-2`.
+
+collie only renames a tab that still has herdr's numeric label, or an agent
+that has no name, or one whose current name collie set. Rename something
+yourself and collie leaves it alone from then on. To hand a tab back, rename
+it to a number.
 
 ## How it works
 
-herdr runs `collie` from the event hooks in `herdr-plugin.toml`; there is no
-background process. Each run talks to herdr over its socket API and exits.
+herdr runs `collie` from the hooks in [`herdr-plugin.toml`](herdr-plugin.toml).
+Each run talks to herdr over its socket API and exits.
 
-| Command | Hook | Effect |
+| Command | Runs on | Effect |
 | --- | --- | --- |
-| `collie focused` | `workspace.focused` | Moves the focused space to the top. |
-| `collie name` | agent and pane events | Renames tabs after their agents. |
+| `collie focused` | `workspace.focused` | Moves the focused space to the top if it is still focused after `dwell_ms`. |
+| `collie name` | agent and pane events | Names tabs and agents. |
 | `collie startup` | herdr startup | Does both immediately. |
+
+## Troubleshooting
+
+See what collie did, and any errors:
+
+```bash
+herdr plugin log list --plugin collie
+```
+
+- **Nothing happens after install.** Check that `herdr plugin list` shows
+  collie as enabled, then run `herdr plugin action invoke collie.name`.
+- **A space jumps to the top too eagerly, or too late.** Adjust `dwell_ms`.
+- **A tab or agent is not renamed.** It has a name collie did not set. See
+  [How names are chosen](#how-names-are-chosen).
+
+## Contributing
+
+Issues and pull requests are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## License
+
+[MIT](LICENSE)

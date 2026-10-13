@@ -1,8 +1,8 @@
 id = "collie"
 name = "Collie"
-version = "0.1.0"
+version = "0.2.0"
 min_herdr_version = "0.9.0"
-description = "Keeps spaces sorted by most recently used and names tabs after their agents"
+description = "Keeps spaces sorted by recent use and names tabs and agents after their work"
 platforms = ["linux", "macos"]
 
 [[build]]
@@ -16,7 +16,7 @@ command = ["target/release/collie", "startup"]
 on = "workspace.focused"
 command = ["target/release/collie", "focused"]
 
-# Tabs: rename after the most recently active agent in the tab.
+# Tabs and agents: name after what the agents are working on.
 [[events]]
 on = "pane.agent_status_changed"
 command = ["target/release/collie", "name"]
@@ -34,7 +34,7 @@ on = "pane.moved"
 command = ["target/release/collie", "name"]
 
 [[actions]]
-id = "name-tabs"
-title = "Rename tabs after their agents"
+id = "name"
+title = "Name tabs and agents"
 contexts = ["workspace"]
 command = ["target/release/collie", "name"]
