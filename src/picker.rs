@@ -212,6 +212,18 @@ fn read_byte(input: &mut impl Read) -> io::Result<Option<u8>> {
     Ok((input.read(&mut byte)? == 1).then_some(byte[0]))
 }
 
+/// Reads the rest of an escape sequence and returns its final byte, so that
+/// parameters such as the `1;5` in ctrl+arrow are not taken for key presses.
+fn read_sequence_end(input: &mut impl Read) -> io::Result<Option<u8>> {
+    loop {
+        match read_byte(input)? {
+            Some(byte) if (0x40..=0x7e).contains(&byte) => return Ok(Some(byte)),
+            Some(_) => continue,
+            None => return Ok(None),
+        }
+    }
+}
+
 /// Waits for the next key press.
 fn read_key(input: &mut impl Read) -> io::Result<Key> {
     loop {
@@ -226,7 +238,7 @@ fn read_key(input: &mut impl Read) -> io::Result<Key> {
             b'1'..=b'9' => Key::Digit(usize::from(byte - b'0')),
             0x1b => match read_byte(input)? {
                 None => Key::Cancel,
-                Some(b'[') | Some(b'O') => match read_byte(input)? {
+                Some(b'[') | Some(b'O') => match read_sequence_end(input)? {
                     Some(b'A') => Key::Up,
                     Some(b'B') => Key::Down,
                     _ => Key::Other,
@@ -349,6 +361,17 @@ mod tests {
         assert_eq!(key(b"7"), Some(Key::Digit(7)));
         assert_eq!(key(b"\x03"), Some(Key::Cancel));
         assert_eq!(key(b"x"), Some(Key::Other));
+    }
+
+    #[test]
+    fn escape_sequence_parameters_are_not_key_presses() {
+        // ctrl+up, page down and a mouse report all contain digits.
+        for sequence in [&b"\x1b[1;5A"[..], b"\x1b[6~", b"\x1b[<0;10;5M"] {
+            let mut input = sequence;
+            let first = read_key(&mut input).ok();
+            assert!(matches!(first, Some(Key::Up | Key::Other)), "{sequence:?}");
+            assert!(input.is_empty(), "{sequence:?} left input unread");
+        }
     }
 
     #[test]

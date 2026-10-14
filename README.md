@@ -184,6 +184,9 @@ that has no name, or one whose current name collie set. Rename something
 yourself and collie leaves it alone from then on. To hand a tab back, rename
 it to a number.
 
+When the last agent in a tab exits, a label collie set is returned to the
+tab's number, so tabs never keep describing work that is gone.
+
 ## How it works
 
 herdr runs `collie` from the hooks in [`herdr-plugin.toml`](herdr-plugin.toml).

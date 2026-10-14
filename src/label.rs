@@ -13,14 +13,23 @@ pub fn subject(agent: &Value) -> Option<&str> {
         .unwrap_or("")
         .trim();
     let kind = agent["agent"].as_str().unwrap_or("");
-    let generic = title.is_empty()
-        || title.eq_ignore_ascii_case(kind)
-        || title.eq_ignore_ascii_case(&format!("{kind} code"));
-    if !generic {
+    if !is_generic(title, kind) {
         return Some(title);
     }
     let cwd = agent["cwd"].as_str()?.trim_end_matches('/');
     cwd.rsplit('/').next().filter(|dir| !dir.is_empty())
+}
+
+/// True for titles that only name the program, such as `Claude Code` or
+/// `Gemini CLI`, and so say nothing about the work.
+fn is_generic(title: &str, kind: &str) -> bool {
+    let rest = match title.get(..kind.len()) {
+        Some(head) if head.eq_ignore_ascii_case(kind) => title[kind.len()..].trim(),
+        _ => return title.is_empty(),
+    };
+    ["", "code", "cli"]
+        .iter()
+        .any(|suffix| rest.eq_ignore_ascii_case(suffix))
 }
 
 /// Shortens `label` to at most `max` characters, marking the cut with `…`.
@@ -65,8 +74,22 @@ mod tests {
 
     #[test]
     fn subject_falls_back_to_directory_for_generic_titles() {
-        for title in ["", "  ", "Claude Code", "claude"] {
+        for title in [
+            "",
+            "  ",
+            "Claude Code",
+            "claude",
+            "Claude CLI",
+            "CLAUDE  code",
+        ] {
             assert_eq!(subject(&agent(title, "/code/meety/")), Some("meety"));
+        }
+    }
+
+    #[test]
+    fn titles_that_merely_start_with_the_agent_kind_are_kept() {
+        for title in ["Claude Code review of PR 4", "claudette", "Codex"] {
+            assert_eq!(subject(&agent(title, "/code/meety")), Some(title));
         }
     }
 

@@ -18,14 +18,14 @@ use config::Config;
 const USAGE: &str = "usage: collie <command>
 
 commands:
-  focused    move the focused space to the top once it has stayed focused
-  name       name tabs and agents after what the agents are working on
-  startup    do both immediately
-  pin        pin the current space to a top slot, or unpin it
-  pins       list pinned spaces
-  pick       choose an agent to jump to, in this terminal
+  focused      move the focused space up once it has stayed focused
+  name         name tabs and agents after what the agents are working on
+  startup      do both immediately
+  pin          pin the current space to a top slot, or unpin it
+  pins         list pinned spaces
+  pick         choose an agent to jump to, in this terminal
   open-picker  open the agent picker in a herdr popup
-  --version  print the version";
+  --version    print the version";
 
 fn sort_spaces(config: &Config, dwell: Duration) -> herdr::Result<()> {
     if config.sort_spaces {
@@ -61,6 +61,10 @@ fn name(config: &Config) -> herdr::Result<()> {
 
 fn run(command: &str) -> herdr::Result<()> {
     match command {
+        "help" | "--help" | "-h" => {
+            println!("{USAGE}");
+            Ok(())
+        }
         "--version" | "-V" => {
             println!("collie {}", env!("CARGO_PKG_VERSION"));
             Ok(())
@@ -79,7 +83,8 @@ fn run(command: &str) -> herdr::Result<()> {
             let sorted = sort_spaces(&config, Duration::ZERO);
             name(&config).and(sorted)
         }
-        _ => Err(USAGE.into()),
+        "" => Err(USAGE.into()),
+        other => Err(format!("unknown command `{other}`\n{USAGE}").into()),
     }
 }
 

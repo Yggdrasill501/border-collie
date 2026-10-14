@@ -6,6 +6,22 @@ All notable changes to collie are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- A tab that collie named goes back to its number when its last agent exits,
+  instead of keeping a label for work that is gone.
+- Titles such as `Gemini CLI` are treated as generic, like `Claude Code`, and
+  replaced by the directory name.
+
+### Fixed
+
+- Agent picker: keys that send escape sequences containing digits, such as
+  ctrl+arrow, no longer jump to an agent.
+- A new agent name can no longer collide with the name of an agent collie
+  could not describe.
+- Errors from herdr are reported as readable messages, and a missing socket
+  names the path that was tried.
+
 ## [0.3.0] - 2026-10-14
 
 ### Added

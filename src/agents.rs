@@ -58,12 +58,12 @@ fn is_variant(name: &str, base: &str) -> bool {
 /// Decides the name each agent should carry. Agents named by hand keep their
 /// name and reserve it; agents already holding a fitting name keep it, so
 /// names do not shuffle between runs; the rest take the first free variant.
-fn plan<'a>(agents: &[Agent<'a>], named: &Names) -> HashMap<&'a str, String> {
+fn plan<'a>(agents: &[Agent<'a>], named: &Names, reserved: &[&str]) -> HashMap<&'a str, String> {
     let ours = |agent: &Agent| match agent.name {
         None => true,
         Some(name) => named.get(agent.terminal).is_some_and(|set| set == name),
     };
-    let mut taken: HashSet<String> = HashSet::new();
+    let mut taken: HashSet<String> = reserved.iter().map(|name| name.to_string()).collect();
     let mut pending = Vec::new();
     for agent in agents {
         match agent.name {
@@ -104,7 +104,12 @@ pub fn rename_all(agents: &[Value], named: &mut Names) -> Result<()> {
     // A fixed order keeps numbering stable from one run to the next.
     live.sort_by_key(|agent| agent.pane);
 
-    let planned = plan(&live, named);
+    // Names of agents collie cannot describe still have to stay unique.
+    let reserved: Vec<&str> = agents
+        .iter()
+        .filter_map(|agent| agent["name"].as_str())
+        .collect();
+    let planned = plan(&live, named, &reserved);
     named.retain(|terminal, _| live.iter().any(|agent| agent.terminal == terminal));
     for agent in &live {
         let Some(new) = planned.get(agent.terminal) else {
@@ -183,7 +188,7 @@ mod tests {
             agent("t2", None, "meety"),
             agent("t3", None, "pr-457"),
         ];
-        let planned = plan(&agents, &Names::new());
+        let planned = plan(&agents, &Names::new(), &[]);
         assert_eq!(planned["t1"], "meety");
         assert_eq!(planned["t2"], "meety-2");
         assert_eq!(planned["t3"], "pr-457");
@@ -195,9 +200,16 @@ mod tests {
             agent("t1", Some("meety"), "something-else"),
             agent("t2", None, "meety"),
         ];
-        let planned = plan(&agents, &Names::new());
+        let planned = plan(&agents, &Names::new(), &[]);
         assert!(!planned.contains_key("t1"));
         assert_eq!(planned["t2"], "meety-2");
+    }
+
+    #[test]
+    fn reserved_names_are_never_reused() {
+        let agents = [agent("t1", None, "meety")];
+        let planned = plan(&agents, &Names::new(), &["meety", "meety-2"]);
+        assert_eq!(planned["t1"], "meety-3");
     }
 
     #[test]
@@ -208,7 +220,7 @@ mod tests {
             agent("t2", Some("meety"), "meety"),
             agent("t3", None, "meety"),
         ];
-        let planned = plan(&agents, &named);
+        let planned = plan(&agents, &named, &[]);
         assert_eq!(planned.len(), 1);
         assert_eq!(planned["t3"], "meety-3");
     }
@@ -217,13 +229,13 @@ mod tests {
     fn our_names_follow_the_agents_work() {
         let named = names(&[("t1", "meety")]);
         let agents = [agent("t1", Some("meety"), "pr-457")];
-        assert_eq!(plan(&agents, &named)["t1"], "pr-457");
+        assert_eq!(plan(&agents, &named, &[])["t1"], "pr-457");
     }
 
     #[test]
     fn a_name_set_by_hand_after_ours_is_left_alone() {
         let named = names(&[("t1", "meety")]);
         let agents = [agent("t1", Some("reviewer"), "pr-457")];
-        assert!(plan(&agents, &named).is_empty());
+        assert!(plan(&agents, &named, &[]).is_empty());
     }
 }

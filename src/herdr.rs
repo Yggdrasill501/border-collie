@@ -14,13 +14,18 @@ fn socket_path() -> PathBuf {
     if let Some(path) = env::var_os("HERDR_SOCKET_PATH") {
         return PathBuf::from(path);
     }
-    let home = env::var_os("HOME").unwrap_or_default();
-    PathBuf::from(home).join(".config/herdr/herdr.sock")
+    let config = match env::var_os("XDG_CONFIG_HOME") {
+        Some(dir) => PathBuf::from(dir),
+        None => PathBuf::from(env::var_os("HOME").unwrap_or_default()).join(".config"),
+    };
+    config.join("herdr/herdr.sock")
 }
 
 /// Sends one request on its own connection and returns its `result`.
 pub fn request(method: &str, params: Value) -> Result<Value> {
-    let mut stream = UnixStream::connect(socket_path())?;
+    let path = socket_path();
+    let mut stream = UnixStream::connect(&path)
+        .map_err(|error| format!("cannot reach herdr at {}: {error}", path.display()))?;
     stream.set_read_timeout(Some(Duration::from_secs(5)))?;
     stream.set_write_timeout(Some(Duration::from_secs(5)))?;
     let line = json!({ "id": "collie", "method": method, "params": params });
@@ -30,7 +35,10 @@ pub fn request(method: &str, params: Value) -> Result<Value> {
     BufReader::new(stream).read_line(&mut reply)?;
     let mut reply: Value = serde_json::from_str(&reply)?;
     if let Some(error) = reply.get("error") {
-        return Err(format!("{method}: {error}").into());
+        let message = error["message"]
+            .as_str()
+            .map_or(error.to_string(), String::from);
+        return Err(format!("{method}: {message}").into());
     }
     Ok(reply["result"].take())
 }
