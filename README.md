@@ -37,6 +37,8 @@ by recent use, and tabs and agents named after the work happening in them.
   else stays sorted by recent use below them.
 - **Agent picker.** One key opens a list of every agent, most recently active
   first. Press a digit to jump straight there.
+- **Next agent that needs you.** One key jumps to an agent that is blocked on
+  a question or has finished, without opening anything.
 - **Your names win.** Tabs and agents you rename yourself are never touched.
 - **No background process.** herdr runs a small Rust binary from its event
   hooks; each run finishes in a few milliseconds.
@@ -112,6 +114,16 @@ command = "border-collie.pick-agent"
 description = "jump to an agent"
 ```
 
+Jump to the next agent that is blocked or has finished:
+
+```toml
+[[keys.command]]
+key = "prefix+shift+a"
+type = "plugin_action"
+command = "border-collie.next-attention"
+description = "next agent needing attention"
+```
+
 To rename everything on demand:
 
 ```toml
@@ -169,6 +181,14 @@ active first, with their status and space:
 Bind it to a key as shown in [Suggested keybindings](#suggested-keybindings),
 or open it with `herdr plugin action invoke border-collie.pick-agent`.
 
+## Next agent that needs attention
+
+`border-collie.next-attention` focuses an agent that is waiting on you,
+wherever it is. Agents blocked on an approval or a question come first, then
+agents that have finished and not been looked at; within each group the most
+recent goes first. The agent you are on is skipped, so pressing the key again
+walks through everything that is waiting.
+
 ## How names are chosen
 
 | | Source | Example |
@@ -198,6 +218,7 @@ Each run talks to herdr over its socket API and exits.
 | `border-collie name` | agent and pane events | Names tabs and agents. |
 | `border-collie startup` | herdr startup | Does both immediately. |
 | `border-collie pin` | the `toggle-pin` action | Pins or unpins the current space. |
+| `border-collie next` | the `next-attention` action | Jumps to the next agent that needs attention. |
 | `border-collie pick` | the `pick-agent` action, in a popup | Shows the agent picker. |
 
 ## Troubleshooting

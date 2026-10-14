@@ -6,6 +6,11 @@ All notable changes to border-collie are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- `border-collie.next-attention` action: jumps to the next agent that is
+  blocked or has finished, blocked agents first.
+
 ## [0.4.0] - 2026-10-14
 
 The plugin is now called **border-collie**, to tell it apart from an unrelated

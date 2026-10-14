@@ -1,6 +1,7 @@
 //! border-collie: herdr plugin commands, run by the hooks in `herdr-plugin.toml`.
 
 mod agents;
+mod attention;
 mod config;
 mod herdr;
 mod label;
@@ -25,6 +26,7 @@ commands:
   pins         list pinned spaces
   pick         choose an agent to jump to, in this terminal
   open-picker  open the agent picker in a herdr popup
+  next         jump to the next agent that needs attention
   --version    print the version";
 
 fn sort_spaces(config: &Config, dwell: Duration) -> herdr::Result<()> {
@@ -76,6 +78,7 @@ fn run(command: &str) -> herdr::Result<()> {
         "name" => name(&config::load()),
         "pin" => spaces::toggle_pin(),
         "pins" => spaces::list_pins(),
+        "next" => attention::jump(),
         "pick" => picker::run(),
         "open-picker" => picker::open(),
         "startup" => {
