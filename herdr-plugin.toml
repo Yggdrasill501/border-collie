@@ -45,6 +45,12 @@ title = "Jump to an agent"
 contexts = ["workspace"]
 command = ["target/release/collie", "open-picker"]
 
+[[actions]]
+id = "toggle-pin"
+title = "Pin or unpin this space"
+contexts = ["workspace"]
+command = ["target/release/collie", "pin"]
+
 # Agent picker, opened by the pick-agent action.
 [[panes]]
 id = "agents"

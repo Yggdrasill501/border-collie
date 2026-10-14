@@ -20,6 +20,8 @@ pub struct State {
     pub tabs: Names,
     /// Names collie set, keyed by the agent's terminal id.
     pub agents: Names,
+    /// Ids of pinned spaces, in slot order.
+    pub pins: Vec<String>,
 }
 
 fn state_dir() -> Option<PathBuf> {
@@ -46,14 +48,18 @@ fn names(value: &Value) -> Names {
 impl State {
     fn from_json(text: &str) -> Self {
         let value: Value = serde_json::from_str(text).unwrap_or_default();
+        let pins = value["pins"].as_array().into_iter().flatten();
         Self {
             tabs: names(&value["tabs"]),
             agents: names(&value["agents"]),
+            pins: pins
+                .filter_map(|id| Some(id.as_str()?.to_string()))
+                .collect(),
         }
     }
 
     fn to_json(&self) -> String {
-        json!({ "tabs": self.tabs, "agents": self.agents }).to_string()
+        json!({ "tabs": self.tabs, "agents": self.agents, "pins": self.pins }).to_string()
     }
 }
 
@@ -96,7 +102,7 @@ impl Store {
             .unwrap_or_default();
         State {
             tabs,
-            agents: Names::new(),
+            ..State::default()
         }
     }
 
@@ -122,6 +128,7 @@ mod tests {
         let mut state = State::default();
         state.tabs.insert("w1:t1".into(), "PR 457".into());
         state.agents.insert("term_1".into(), "pr-457".into());
+        state.pins = vec!["w3".into(), "w1".into()];
         assert_eq!(State::from_json(&state.to_json()), state);
     }
 

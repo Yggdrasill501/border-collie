@@ -21,6 +21,8 @@ commands:
   focused    move the focused space to the top once it has stayed focused
   name       name tabs and agents after what the agents are working on
   startup    do both immediately
+  pin        pin the current space to a top slot, or unpin it
+  pins       list pinned spaces
   pick       choose an agent to jump to, in this terminal
   open-picker  open the agent picker in a herdr popup
   --version  print the version";
@@ -68,6 +70,8 @@ fn run(command: &str) -> herdr::Result<()> {
             sort_spaces(&config, Duration::from_millis(config.dwell_ms))
         }
         "name" => name(&config::load()),
+        "pin" => spaces::toggle_pin(),
+        "pins" => spaces::list_pins(),
         "pick" => picker::run(),
         "open-picker" => picker::open(),
         "startup" => {

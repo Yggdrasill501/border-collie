@@ -8,6 +8,8 @@ All notable changes to collie are documented here. The format follows
 
 ### Added
 
+- Pinned spaces: the `collie.toggle-pin` action pins the current space to a
+  fixed top slot. Unpinned spaces stay sorted by recent use below the pins.
 - Agent picker: the `collie.pick-agent` action opens a popup listing every
   agent, most recently active first. Press a digit to jump to one.
 

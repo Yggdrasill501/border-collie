@@ -23,13 +23,16 @@ by recent use, and tabs and agents named after the work happening in them.
 ## Features
 
 - **Recent spaces on top.** Switch to a space, stay a second, and it moves to
-  the top. Space 1 is always the current one and space 2 the one you came
-  from, so jumping back is always the same key.
+  the top. Without pins, space 1 is always the current one and space 2 the
+  one you came from, so jumping back is always the same key.
 - **Tabs named after their agents.** A tab takes the terminal title of its
   most recently active agent, or the directory name when the title is generic.
 - **Agents named after their work.** Each agent gets a unique name such as
   `pr-457`, which herdr accepts anywhere it takes an agent:
   `herdr agent focus pr-457`.
+- **Pinned spaces.** Pin the spaces you live in to fixed top slots, the way
+  [harpoon](https://github.com/ThePrimeagen/harpoon) pins files. Everything
+  else stays sorted by recent use below them.
 - **Agent picker.** One key opens a list of every agent, most recently active
   first. Press a digit to jump straight there.
 - **Your names win.** Tabs and agents you rename yourself are never touched.
@@ -87,6 +90,16 @@ switch_workspace = "prefix+1..9"        # prefix+2 is always the previous space
 switch_tab       = "prefix+shift+1..9"
 ```
 
+Pin or unpin the current space (see [Pinned spaces](#pinned-spaces)):
+
+```toml
+[[keys.command]]
+key = "prefix+shift+p"
+type = "plugin_action"
+command = "collie.toggle-pin"
+description = "pin or unpin this space"
+```
+
 Open the [agent picker](#agent-picker):
 
 ```toml
@@ -106,6 +119,29 @@ type = "plugin_action"
 command = "collie.name"
 description = "name tabs and agents"
 ```
+
+## Pinned spaces
+
+Recent-first ordering means a space's number changes as you move around.
+For the few spaces you want on a fixed key, pin them:
+
+```bash
+herdr plugin action invoke collie.toggle-pin   # pin or unpin the current space
+```
+
+Pinned spaces take the top slots in the order you pinned them, and stay
+there. With two pins, `prefix+1` and `prefix+2` always open those two spaces,
+`prefix+3` is the most recent of the rest, and so on.
+
+```text
+ 1 meety             pinned
+ 2 meety-clone       pinned
+ 3 daily-log         most recent of the rest
+ 4 ~
+```
+
+Run the action again on a pinned space to unpin it. Pins are forgotten when
+their space is closed.
 
 ## Agent picker
 
@@ -153,9 +189,10 @@ Each run talks to herdr over its socket API and exits.
 
 | Command | Runs on | Effect |
 | --- | --- | --- |
-| `collie focused` | `workspace.focused` | Moves the focused space to the top if it is still focused after `dwell_ms`. |
+| `collie focused` | `workspace.focused` | Moves the focused space above the other unpinned spaces if it is still focused after `dwell_ms`. |
 | `collie name` | agent and pane events | Names tabs and agents. |
 | `collie startup` | herdr startup | Does both immediately. |
+| `collie pin` | the `toggle-pin` action | Pins or unpins the current space. |
 | `collie pick` | the `pick-agent` action, in a popup | Shows the agent picker. |
 
 ## Troubleshooting
