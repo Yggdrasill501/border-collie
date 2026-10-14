@@ -99,9 +99,13 @@ impl Store {
         // Before 0.4 the plugin was called collie and kept its state under
         // that name.
         let legacy = dir.with_file_name(LEGACY_PLUGIN_ID).join("state.json");
-        fs::read_to_string(legacy)
-            .map(|text| State::from_json(&text))
-            .unwrap_or_default()
+        let Ok(text) = fs::read_to_string(legacy) else {
+            return State::default();
+        };
+        let state = State::from_json(&text);
+        // Copy it over so the old directory can be removed.
+        let _ = self.save(&state);
+        state
     }
 
     /// Replaces the state file in one step so a crash cannot leave it torn.
