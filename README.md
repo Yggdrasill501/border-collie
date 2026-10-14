@@ -4,8 +4,9 @@
 [![Release](https://img.shields.io/github/v/release/Yggdrasill501/border-collie)](https://github.com/Yggdrasill501/border-collie/releases)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-A [herdr](https://herdr.dev) plugin that keeps the herd in order: spaces sorted
-by recent use, and tabs and agents named after the work happening in them.
+A [herdr](https://herdr.dev) plugin that keeps the herd in order: recent
+spaces on top, pins for the ones you live in, tabs and agents named after
+their work, and a picker to jump between agents.
 
 **[Website](https://yggdrasill501.github.io/border-collie/)** · [Changelog](CHANGELOG.md)
 
@@ -34,7 +35,7 @@ by recent use, and tabs and agents named after the work happening in them.
   a question or has finished, without opening anything.
 - **Your names win.** Tabs and agents you rename yourself are never touched.
 - **No background process.** herdr runs a small Rust binary from its event
-  hooks; each run finishes in a few milliseconds.
+  hooks; a naming run takes a few milliseconds.
 
 ## Requirements
 
@@ -47,8 +48,8 @@ by recent use, and tabs and agents named after the work happening in them.
 herdr plugin install Yggdrasill501/border-collie
 ```
 
-That is all: border-collie starts working on the next space switch or agent update.
-To apply it to everything immediately:
+That is all: border-collie starts working on the next space switch or agent
+update. To apply it to everything immediately:
 
 ```bash
 herdr plugin action invoke border-collie.name
