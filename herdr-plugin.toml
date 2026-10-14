@@ -38,3 +38,18 @@ id = "name"
 title = "Name tabs and agents"
 contexts = ["workspace"]
 command = ["target/release/collie", "name"]
+
+[[actions]]
+id = "pick-agent"
+title = "Jump to an agent"
+contexts = ["workspace"]
+command = ["target/release/collie", "open-picker"]
+
+# Agent picker, opened by the pick-agent action.
+[[panes]]
+id = "agents"
+title = "Agents"
+placement = "popup"
+width = "70%"
+height = 14
+command = ["target/release/collie", "pick"]

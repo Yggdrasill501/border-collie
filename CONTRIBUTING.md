@@ -36,6 +36,7 @@ cargo test
 | `src/herdr.rs` | Client for herdr's socket API. |
 | `src/spaces.rs` | Recent-first space ordering. |
 | `src/tabs.rs`, `src/agents.rs` | Tab and agent naming. |
+| `src/picker.rs` | Interactive agent picker. |
 | `src/label.rs` | Turning titles into labels and names. |
 | `src/config.rs`, `src/state.rs` | Settings and remembered names. |
 

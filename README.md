@@ -30,6 +30,8 @@ by recent use, and tabs and agents named after the work happening in them.
 - **Agents named after their work.** Each agent gets a unique name such as
   `pr-457`, which herdr accepts anywhere it takes an agent:
   `herdr agent focus pr-457`.
+- **Agent picker.** One key opens a list of every agent, most recently active
+  first. Press a digit to jump straight there.
 - **Your names win.** Tabs and agents you rename yourself are never touched.
 - **No background process.** herdr runs a small Rust binary from its event
   hooks; each run finishes in a few milliseconds.
@@ -85,6 +87,16 @@ switch_workspace = "prefix+1..9"        # prefix+2 is always the previous space
 switch_tab       = "prefix+shift+1..9"
 ```
 
+Open the [agent picker](#agent-picker):
+
+```toml
+[[keys.command]]
+key = "prefix+a"
+type = "plugin_action"
+command = "collie.pick-agent"
+description = "jump to an agent"
+```
+
 To rename everything on demand:
 
 ```toml
@@ -94,6 +106,30 @@ type = "plugin_action"
 command = "collie.name"
 description = "name tabs and agents"
 ```
+
+## Agent picker
+
+The picker opens in a popup and lists agents from every space, most recently
+active first, with their status and space:
+
+```text
+ Jump to agent
+ 1  ● working  meety-clone        PR 457
+ 2  ! blocked  meety              Linear tasks needing attention
+ 3  ✓ done     daily-log          GitHub contributions backfill
+ 4  · idle     ~                  Slack MCP for multiple accounts
+ 1-9 jump · j/k move · enter select · esc cancel
+```
+
+| Key | Action |
+| --- | --- |
+| `1`-`9` | Jump to that agent |
+| `j` / `k`, arrow keys | Move the selection |
+| `enter` | Jump to the selected agent |
+| `esc`, `q` | Close |
+
+Bind it to a key as shown in [Suggested keybindings](#suggested-keybindings),
+or open it with `herdr plugin action invoke collie.pick-agent`.
 
 ## How names are chosen
 
@@ -120,6 +156,7 @@ Each run talks to herdr over its socket API and exits.
 | `collie focused` | `workspace.focused` | Moves the focused space to the top if it is still focused after `dwell_ms`. |
 | `collie name` | agent and pane events | Names tabs and agents. |
 | `collie startup` | herdr startup | Does both immediately. |
+| `collie pick` | the `pick-agent` action, in a popup | Shows the agent picker. |
 
 ## Troubleshooting
 

@@ -4,6 +4,13 @@ All notable changes to collie are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- Agent picker: the `collie.pick-agent` action opens a popup listing every
+  agent, most recently active first. Press a digit to jump to one.
+
 ## [0.2.0] - 2026-10-14
 
 ### Added
@@ -32,5 +39,6 @@ All notable changes to collie are documented here. The format follows
 - Spaces are kept sorted by most recently focused.
 - Tabs are named after their most recently active agent.
 
+[Unreleased]: https://github.com/Yggdrasill501/collie/compare/v0.2.0...HEAD
 [0.2.0]: https://github.com/Yggdrasill501/collie/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/Yggdrasill501/collie/releases/tag/v0.1.0

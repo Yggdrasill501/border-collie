@@ -4,6 +4,7 @@ mod agents;
 mod config;
 mod herdr;
 mod label;
+mod picker;
 mod spaces;
 mod state;
 mod tabs;
@@ -20,6 +21,8 @@ commands:
   focused    move the focused space to the top once it has stayed focused
   name       name tabs and agents after what the agents are working on
   startup    do both immediately
+  pick       choose an agent to jump to, in this terminal
+  open-picker  open the agent picker in a herdr popup
   --version  print the version";
 
 fn sort_spaces(config: &Config, dwell: Duration) -> herdr::Result<()> {
@@ -65,6 +68,8 @@ fn run(command: &str) -> herdr::Result<()> {
             sort_spaces(&config, Duration::from_millis(config.dwell_ms))
         }
         "name" => name(&config::load()),
+        "pick" => picker::run(),
+        "open-picker" => picker::open(),
         "startup" => {
             let config = config::load();
             let sorted = sort_spaces(&config, Duration::ZERO);
