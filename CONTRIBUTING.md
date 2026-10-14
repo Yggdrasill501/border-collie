@@ -11,12 +11,12 @@ cargo build --release
 herdr plugin link "$PWD"      # run this checkout as the installed plugin
 ```
 
-herdr runs `target/release/collie` from the hooks in `herdr-plugin.toml`, so
+herdr runs `target/release/border-collie` from the hooks in `herdr-plugin.toml`, so
 rebuild after each change. You can also run the commands by hand:
 
 ```bash
-target/release/collie name
-herdr plugin log list --plugin collie   # output of the hook runs
+target/release/border-collie name
+herdr plugin log list --plugin border-collie   # output of the hook runs
 ```
 
 Before opening a pull request:

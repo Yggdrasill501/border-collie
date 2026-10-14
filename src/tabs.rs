@@ -42,7 +42,7 @@ enum Decision {
 }
 
 /// Decides what to do with one tab. `ours` says whether its current label
-/// was set by collie; `wanted` is the label its agents suggest, if it has
+/// was set by border-collie; `wanted` is the label its agents suggest, if it has
 /// any.
 fn decide(label: &str, number: u64, ours: bool, wanted: Option<&String>) -> Decision {
     if !(ours || is_default_label(label)) {
@@ -58,7 +58,7 @@ fn decide(label: &str, number: u64, ours: bool, wanted: Option<&String>) -> Deci
     }
 }
 
-/// Renames every tab collie may touch. `named` holds the labels collie set on
+/// Renames every tab border-collie may touch. `named` holds the labels border-collie set on
 /// earlier runs and is updated in place.
 pub fn rename_all(agents: &[Value], max: usize, named: &mut Names) -> Result<()> {
     let tabs = herdr::list("tab.list", "tabs")?;
@@ -93,7 +93,7 @@ pub fn rename_all(agents: &[Value], max: usize, named: &mut Names) -> Result<()>
                     named.insert(id.to_string(), stored.to_string());
                 }
             }
-            Err(error) => eprintln!("collie: tab {id}: {error}"),
+            Err(error) => eprintln!("border-collie: tab {id}: {error}"),
         }
     }
     Ok(())

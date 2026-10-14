@@ -28,7 +28,7 @@ pub fn request(method: &str, params: Value) -> Result<Value> {
         .map_err(|error| format!("cannot reach herdr at {}: {error}", path.display()))?;
     stream.set_read_timeout(Some(Duration::from_secs(5)))?;
     stream.set_write_timeout(Some(Duration::from_secs(5)))?;
-    let line = json!({ "id": "collie", "method": method, "params": params });
+    let line = json!({ "id": "border-collie", "method": method, "params": params });
     stream.write_all(format!("{line}\n").as_bytes())?;
 
     let mut reply = String::new();

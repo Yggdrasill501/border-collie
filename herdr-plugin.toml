@@ -1,6 +1,6 @@
-id = "collie"
-name = "Collie"
-version = "0.3.0"
+id = "border-collie"
+name = "Border Collie"
+version = "0.4.0"
 min_herdr_version = "0.9.0"
 description = "Keeps spaces sorted by recent use and names tabs and agents after their work"
 platforms = ["linux", "macos"]
@@ -9,47 +9,47 @@ platforms = ["linux", "macos"]
 command = ["cargo", "build", "--release"]
 
 [[startup]]
-command = ["target/release/collie", "startup"]
+command = ["target/release/border-collie", "startup"]
 
 # Spaces: move the focused space to the top once it has stayed focused.
 [[events]]
 on = "workspace.focused"
-command = ["target/release/collie", "focused"]
+command = ["target/release/border-collie", "focused"]
 
 # Tabs and agents: name after what the agents are working on.
 [[events]]
 on = "pane.agent_status_changed"
-command = ["target/release/collie", "name"]
+command = ["target/release/border-collie", "name"]
 
 [[events]]
 on = "pane.agent_detected"
-command = ["target/release/collie", "name"]
+command = ["target/release/border-collie", "name"]
 
 [[events]]
 on = "pane.closed"
-command = ["target/release/collie", "name"]
+command = ["target/release/border-collie", "name"]
 
 [[events]]
 on = "pane.moved"
-command = ["target/release/collie", "name"]
+command = ["target/release/border-collie", "name"]
 
 [[actions]]
 id = "name"
 title = "Name tabs and agents"
 contexts = ["workspace"]
-command = ["target/release/collie", "name"]
+command = ["target/release/border-collie", "name"]
 
 [[actions]]
 id = "pick-agent"
 title = "Jump to an agent"
 contexts = ["workspace"]
-command = ["target/release/collie", "open-picker"]
+command = ["target/release/border-collie", "open-picker"]
 
 [[actions]]
 id = "toggle-pin"
 title = "Pin or unpin this space"
 contexts = ["workspace"]
-command = ["target/release/collie", "pin"]
+command = ["target/release/border-collie", "pin"]
 
 # Agent picker, opened by the pick-agent action.
 [[panes]]
@@ -58,4 +58,4 @@ title = "Agents"
 placement = "popup"
 width = "70%"
 height = 14
-command = ["target/release/collie", "pick"]
+command = ["target/release/border-collie", "pick"]

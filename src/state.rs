@@ -1,7 +1,7 @@
-//! What collie has named, kept between runs in the plugin's state directory.
+//! What border-collie has named, kept between runs in the plugin's state directory.
 //!
 //! A tab or agent is only renamed while it still carries herdr's default or
-//! the name collie last gave it, so names set by hand are never overwritten.
+//! the name border-collie last gave it, so names set by hand are never overwritten.
 
 use std::collections::HashMap;
 use std::env;
@@ -12,13 +12,15 @@ use serde_json::{json, Value};
 
 use crate::herdr::Result;
 
+const LEGACY_PLUGIN_ID: &str = "collie";
+
 pub type Names = HashMap<String, String>;
 
 #[derive(Debug, Default, Clone, PartialEq)]
 pub struct State {
-    /// Labels collie set, keyed by tab id.
+    /// Labels border-collie set, keyed by tab id.
     pub tabs: Names,
-    /// Names collie set, keyed by the agent's terminal id.
+    /// Names border-collie set, keyed by the agent's terminal id.
     pub agents: Names,
     /// Ids of pinned spaces, in slot order.
     pub pins: Vec<String>,
@@ -33,7 +35,7 @@ fn state_dir() -> Option<PathBuf> {
         Some(dir) => PathBuf::from(dir),
         None => PathBuf::from(env::var_os("HOME")?).join(".local/state"),
     };
-    Some(base.join("herdr/plugins/collie"))
+    Some(base.join("herdr/plugins/border-collie"))
 }
 
 fn names(value: &Value) -> Names {
@@ -94,16 +96,12 @@ impl Store {
         if let Ok(text) = fs::read_to_string(dir.join("state.json")) {
             return State::from_json(&text);
         }
-        // collie 0.1 only tracked tabs, in a file of its own.
-        let tabs = fs::read_to_string(dir.join("tab-names.json"))
-            .ok()
-            .and_then(|text| serde_json::from_str(&text).ok())
-            .map(|value| names(&value))
-            .unwrap_or_default();
-        State {
-            tabs,
-            ..State::default()
-        }
+        // Before 0.4 the plugin was called collie and kept its state under
+        // that name.
+        let legacy = dir.with_file_name(LEGACY_PLUGIN_ID).join("state.json");
+        fs::read_to_string(legacy)
+            .map(|text| State::from_json(&text))
+            .unwrap_or_default()
     }
 
     /// Replaces the state file in one step so a crash cannot leave it torn.
@@ -114,7 +112,6 @@ impl Store {
         let temporary = dir.join("state.json.tmp");
         fs::write(&temporary, state.to_json())?;
         fs::rename(temporary, dir.join("state.json"))?;
-        let _ = fs::remove_file(dir.join("tab-names.json"));
         Ok(())
     }
 }

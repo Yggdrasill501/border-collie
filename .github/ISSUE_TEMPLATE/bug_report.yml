@@ -1,21 +1,21 @@
 name: Bug report
-description: Something collie does wrong
+description: Something border-collie does wrong
 labels: [bug]
 body:
   - type: textarea
     attributes:
       label: What happened
-      description: What you did, what you expected, and what collie did instead.
+      description: What you did, what you expected, and what border-collie did instead.
     validations:
       required: true
   - type: textarea
     attributes:
       label: Plugin log
-      description: Output of `herdr plugin log list --plugin collie`.
+      description: Output of `herdr plugin log list --plugin border-collie`.
       render: shell
   - type: input
     attributes:
       label: Versions
-      description: Output of `herdr --version`, the collie version from `herdr plugin list`, and your OS.
+      description: Output of `herdr --version`, the border-collie version from `herdr plugin list`, and your OS.
     validations:
       required: true

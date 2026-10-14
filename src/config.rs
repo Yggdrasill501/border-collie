@@ -16,7 +16,7 @@ pub struct Config {
     pub name_agents: bool,
     /// How long a space must stay focused before it is promoted.
     pub dwell_ms: u64,
-    /// Longest tab label collie will set, in characters.
+    /// Longest tab label border-collie will set, in characters.
     pub tab_label_max: usize,
 }
 
@@ -45,7 +45,7 @@ pub fn load() -> Config {
     };
     let (config, warnings) = parse(&text);
     for warning in warnings {
-        eprintln!("collie: config.toml: {warning}");
+        eprintln!("border-collie: config.toml: {warning}");
     }
     config
 }

@@ -17,7 +17,7 @@ struct Agent<'a> {
     terminal: &'a str,
     pane: &'a str,
     name: Option<&'a str>,
-    /// Name collie would like the agent to have, before deduplication.
+    /// Name border-collie would like the agent to have, before deduplication.
     base: String,
 }
 
@@ -87,7 +87,7 @@ fn plan<'a>(agents: &[Agent<'a>], named: &Names, reserved: &[&str]) -> HashMap<&
     planned
 }
 
-/// Renames every agent collie may touch. `named` holds the names collie set
+/// Renames every agent border-collie may touch. `named` holds the names border-collie set
 /// on earlier runs and is updated in place.
 pub fn rename_all(agents: &[Value], named: &mut Names) -> Result<()> {
     let mut live: Vec<Agent> = agents
@@ -104,7 +104,7 @@ pub fn rename_all(agents: &[Value], named: &mut Names) -> Result<()> {
     // A fixed order keeps numbering stable from one run to the next.
     live.sort_by_key(|agent| agent.pane);
 
-    // Names of agents collie cannot describe still have to stay unique.
+    // Names of agents border-collie cannot describe still have to stay unique.
     let reserved: Vec<&str> = agents
         .iter()
         .filter_map(|agent| agent["name"].as_str())
@@ -131,7 +131,7 @@ pub fn rename_all(agents: &[Value], named: &mut Names) -> Result<()> {
                 );
                 named.insert(agent.terminal.to_string(), new.clone());
             }
-            Err(error) => eprintln!("collie: agent {}: {error}", agent.pane),
+            Err(error) => eprintln!("border-collie: agent {}: {error}", agent.pane),
         }
     }
     Ok(())

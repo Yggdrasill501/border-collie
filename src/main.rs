@@ -1,4 +1,4 @@
-//! collie: herdr plugin commands, run by the hooks in `herdr-plugin.toml`.
+//! border-collie: herdr plugin commands, run by the hooks in `herdr-plugin.toml`.
 
 mod agents;
 mod config;
@@ -15,7 +15,7 @@ use std::time::Duration;
 
 use config::Config;
 
-const USAGE: &str = "usage: collie <command>
+const USAGE: &str = "usage: border-collie <command>
 
 commands:
   focused      move the focused space up once it has stayed focused
@@ -66,7 +66,7 @@ fn run(command: &str) -> herdr::Result<()> {
             Ok(())
         }
         "--version" | "-V" => {
-            println!("collie {}", env!("CARGO_PKG_VERSION"));
+            println!("border-collie {}", env!("CARGO_PKG_VERSION"));
             Ok(())
         }
         "focused" => {
@@ -93,7 +93,7 @@ fn main() -> ExitCode {
     match run(&command) {
         Ok(()) => ExitCode::SUCCESS,
         Err(error) => {
-            eprintln!("collie: {error}");
+            eprintln!("border-collie: {error}");
             ExitCode::FAILURE
         }
     }

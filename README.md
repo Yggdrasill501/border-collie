@@ -1,12 +1,12 @@
-# collie
+# border-collie
 
-[![CI](https://github.com/Yggdrasill501/collie/actions/workflows/ci.yml/badge.svg)](https://github.com/Yggdrasill501/collie/actions/workflows/ci.yml)
+[![CI](https://github.com/Yggdrasill501/border-collie/actions/workflows/ci.yml/badge.svg)](https://github.com/Yggdrasill501/border-collie/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 A [herdr](https://herdr.dev) plugin that keeps the herd in order: spaces sorted
 by recent use, and tabs and agents named after the work happening in them.
 
-**[Website](https://yggdrasill501.github.io/collie/)** · [Changelog](CHANGELOG.md)
+**[Website](https://yggdrasill501.github.io/border-collie/)** · [Changelog](CHANGELOG.md)
 
 ```text
  before                         after
@@ -49,26 +49,26 @@ by recent use, and tabs and agents named after the work happening in them.
 ## Installation
 
 ```bash
-herdr plugin install Yggdrasill501/collie
+herdr plugin install Yggdrasill501/border-collie
 ```
 
-That is all: collie starts working on the next space switch or agent update.
+That is all: border-collie starts working on the next space switch or agent update.
 To apply it to everything immediately:
 
 ```bash
-herdr plugin action invoke collie.name
+herdr plugin action invoke border-collie.name
 ```
 
 To update, run the install command again. To remove it:
 
 ```bash
-herdr plugin uninstall collie
+herdr plugin uninstall border-collie
 ```
 
 ## Configuration
 
-collie works without configuration. To change a setting, create `config.toml`
-in the plugin's config directory, which `herdr plugin config-dir collie`
+border-collie works without configuration. To change a setting, create `config.toml`
+in the plugin's config directory, which `herdr plugin config-dir border-collie`
 prints:
 
 ```toml
@@ -98,7 +98,7 @@ Pin or unpin the current space (see [Pinned spaces](#pinned-spaces)):
 [[keys.command]]
 key = "prefix+shift+p"
 type = "plugin_action"
-command = "collie.toggle-pin"
+command = "border-collie.toggle-pin"
 description = "pin or unpin this space"
 ```
 
@@ -108,7 +108,7 @@ Open the [agent picker](#agent-picker):
 [[keys.command]]
 key = "prefix+a"
 type = "plugin_action"
-command = "collie.pick-agent"
+command = "border-collie.pick-agent"
 description = "jump to an agent"
 ```
 
@@ -118,7 +118,7 @@ To rename everything on demand:
 [[keys.command]]
 key = "prefix+shift+c"
 type = "plugin_action"
-command = "collie.name"
+command = "border-collie.name"
 description = "name tabs and agents"
 ```
 
@@ -128,7 +128,7 @@ Recent-first ordering means a space's number changes as you move around.
 For the few spaces you want on a fixed key, pin them:
 
 ```bash
-herdr plugin action invoke collie.toggle-pin   # pin or unpin the current space
+herdr plugin action invoke border-collie.toggle-pin   # pin or unpin the current space
 ```
 
 Pinned spaces take the top slots in the order you pinned them, and stay
@@ -167,7 +167,7 @@ active first, with their status and space:
 | `esc`, `q` | Close |
 
 Bind it to a key as shown in [Suggested keybindings](#suggested-keybindings),
-or open it with `herdr plugin action invoke collie.pick-agent`.
+or open it with `herdr plugin action invoke border-collie.pick-agent`.
 
 ## How names are chosen
 
@@ -179,39 +179,39 @@ or open it with `herdr plugin action invoke collie.pick-agent`.
 When a title is empty or generic (`Claude Code`), the directory name is used
 instead. Two agents that would get the same name become `meety` and `meety-2`.
 
-collie only renames a tab that still has herdr's numeric label, or an agent
-that has no name, or one whose current name collie set. Rename something
-yourself and collie leaves it alone from then on. To hand a tab back, rename
+border-collie only renames a tab that still has herdr's numeric label, or an agent
+that has no name, or one whose current name border-collie set. Rename something
+yourself and border-collie leaves it alone from then on. To hand a tab back, rename
 it to a number.
 
-When the last agent in a tab exits, a label collie set is returned to the
+When the last agent in a tab exits, a label border-collie set is returned to the
 tab's number, so tabs never keep describing work that is gone.
 
 ## How it works
 
-herdr runs `collie` from the hooks in [`herdr-plugin.toml`](herdr-plugin.toml).
+herdr runs `border-collie` from the hooks in [`herdr-plugin.toml`](herdr-plugin.toml).
 Each run talks to herdr over its socket API and exits.
 
 | Command | Runs on | Effect |
 | --- | --- | --- |
-| `collie focused` | `workspace.focused` | Moves the focused space above the other unpinned spaces if it is still focused after `dwell_ms`. |
-| `collie name` | agent and pane events | Names tabs and agents. |
-| `collie startup` | herdr startup | Does both immediately. |
-| `collie pin` | the `toggle-pin` action | Pins or unpins the current space. |
-| `collie pick` | the `pick-agent` action, in a popup | Shows the agent picker. |
+| `border-collie focused` | `workspace.focused` | Moves the focused space above the other unpinned spaces if it is still focused after `dwell_ms`. |
+| `border-collie name` | agent and pane events | Names tabs and agents. |
+| `border-collie startup` | herdr startup | Does both immediately. |
+| `border-collie pin` | the `toggle-pin` action | Pins or unpins the current space. |
+| `border-collie pick` | the `pick-agent` action, in a popup | Shows the agent picker. |
 
 ## Troubleshooting
 
-See what collie did, and any errors:
+See what border-collie did, and any errors:
 
 ```bash
-herdr plugin log list --plugin collie
+herdr plugin log list --plugin border-collie
 ```
 
 - **Nothing happens after install.** Check that `herdr plugin list` shows
-  collie as enabled, then run `herdr plugin action invoke collie.name`.
+  border-collie as enabled, then run `herdr plugin action invoke border-collie.name`.
 - **A space jumps to the top too eagerly, or too late.** Adjust `dwell_ms`.
-- **A tab or agent is not renamed.** It has a name collie did not set. See
+- **A tab or agent is not renamed.** It has a name border-collie did not set. See
   [How names are chosen](#how-names-are-chosen).
 
 ## Contributing

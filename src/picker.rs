@@ -12,7 +12,7 @@ use serde_json::{json, Value};
 use crate::herdr::{self, Result};
 use crate::label;
 
-const PLUGIN_ID: &str = "collie";
+const PLUGIN_ID: &str = "border-collie";
 const ENTRYPOINT: &str = "agents";
 
 /// Asks herdr to open the picker popup. Bound to a key through the

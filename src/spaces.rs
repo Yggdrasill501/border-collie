@@ -146,7 +146,7 @@ pub fn toggle_pin() -> Result<()> {
     Ok(())
 }
 
-/// Describes the pinned spaces, for `collie pins`.
+/// Describes the pinned spaces, for `border-collie pins`.
 pub fn list_pins() -> Result<()> {
     let store = Store::open()?;
     let spaces = spaces()?;

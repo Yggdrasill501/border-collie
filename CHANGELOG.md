@@ -1,10 +1,26 @@
 # Changelog
 
-All notable changes to collie are documented here. The format follows
+All notable changes to border-collie are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
+
+## [0.4.0] - 2026-10-14
+
+The plugin is now called **border-collie**, to tell it apart from an unrelated
+herdr project named collie. Earlier entries below use the old name.
+
+### Upgrading from collie
+
+- Uninstall the old plugin and install the new one:
+  `herdr plugin uninstall collie`, then
+  `herdr plugin install Yggdrasill501/border-collie`.
+- Rename actions in your keybindings: `collie.pick-agent` becomes
+  `border-collie.pick-agent`, and likewise for `toggle-pin` and `name`.
+- Move `config.toml`, if you have one, to the directory printed by
+  `herdr plugin config-dir border-collie`.
+- Pins and remembered names carry over on their own.
 
 ### Changed
 
@@ -59,7 +75,8 @@ All notable changes to collie are documented here. The format follows
 - Spaces are kept sorted by most recently focused.
 - Tabs are named after their most recently active agent.
 
-[Unreleased]: https://github.com/Yggdrasill501/collie/compare/v0.3.0...HEAD
-[0.3.0]: https://github.com/Yggdrasill501/collie/compare/v0.2.0...v0.3.0
-[0.2.0]: https://github.com/Yggdrasill501/collie/compare/v0.1.0...v0.2.0
-[0.1.0]: https://github.com/Yggdrasill501/collie/releases/tag/v0.1.0
+[Unreleased]: https://github.com/Yggdrasill501/border-collie/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/Yggdrasill501/border-collie/compare/v0.3.0...v0.4.0
+[0.3.0]: https://github.com/Yggdrasill501/border-collie/compare/v0.2.0...v0.3.0
+[0.2.0]: https://github.com/Yggdrasill501/border-collie/compare/v0.1.0...v0.2.0
+[0.1.0]: https://github.com/Yggdrasill501/border-collie/releases/tag/v0.1.0

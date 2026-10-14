@@ -1,5 +1,5 @@
 name: Feature request
-description: An idea for collie
+description: An idea for border-collie
 labels: [enhancement]
 body:
   - type: textarea

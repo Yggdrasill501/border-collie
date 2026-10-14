@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>collie: recent spaces, pins, and named tabs and agents for herdr</title>
-<meta name="description" content="collie is a herdr plugin that keeps spaces sorted by recent use, pins the ones you live in, names tabs and agents after their work, and adds an agent picker.">
+<title>border-collie: recent spaces, pins, and named tabs and agents for herdr</title>
+<meta name="description" content="border-collie is a herdr plugin that keeps spaces sorted by recent use, pins the ones you live in, names tabs and agents after their work, and adds an agent picker.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="collie, a herdr plugin">
+<meta property="og:title" content="border-collie, a herdr plugin">
 <meta property="og:description" content="Keeps spaces sorted by recent use and names tabs and agents after the work happening in them.">
-<meta property="og:url" content="https://yggdrasill501.github.io/collie/">
+<meta property="og:url" content="https://yggdrasill501.github.io/border-collie/">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='5' fill='%23b4571a'/%3E%3Cpath d='M5 17.5a8.5 8.5 0 1 1 14 0' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round'/%3E%3Ccircle cx='19' cy='17.5' r='2.1' fill='%23fff'/%3E%3Ccircle cx='9.3' cy='10.6' r='1.5' fill='%23fff'/%3E%3Ccircle cx='14.3' cy='9.6' r='1.5' fill='%23fff'/%3E%3Ccircle cx='12.2' cy='14.2' r='1.5' fill='%23fff'/%3E%3C/svg%3E">
 <style>
@@ -235,7 +235,7 @@
 
 <header class="top">
   <div class="wrap wrap--wide">
-    <a class="brand" href="#top" aria-label="collie, top of page">
+    <a class="brand" href="#top" aria-label="border-collie, top of page">
       <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
         <path d="M5 17.5a8.5 8.5 0 1 1 14 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
         <circle cx="19" cy="17.5" r="2.1" fill="currentColor"/>
@@ -243,7 +243,7 @@
         <circle cx="14.3" cy="9.6" r="1.5" fill="currentColor"/>
         <circle cx="12.2" cy="14.2" r="1.5" fill="currentColor"/>
       </svg>
-      collie
+      border-collie
     </a>
     <nav aria-label="Page sections">
       <ul>
@@ -252,7 +252,7 @@
         <li><a href="#configuration">Configuration</a></li>
         <li><a href="#keybindings">Keybindings</a></li>
         <li><a href="#names">Names</a></li>
-        <li><a href="https://github.com/Yggdrasill501/collie">GitHub</a></li>
+        <li><a href="https://github.com/Yggdrasill501/border-collie">GitHub</a></li>
       </ul>
     </nav>
   </div>
@@ -262,11 +262,11 @@
   <div class="hero" id="top">
     <div class="wrap">
       <p class="eyebrow">a plugin for <a href="https://herdr.dev">herdr</a></p>
-      <h1>collie<span class="cursor" aria-hidden="true">_</span></h1>
+      <h1>border-collie<span class="cursor" aria-hidden="true">_</span></h1>
       <p class="tagline">Keeps the herd in order: spaces sorted by recent use, and tabs and agents named after the work happening in them.</p>
 
       <div class="code code--sh code--row">
-        <pre tabindex="0" aria-label="Install command"><code>herdr plugin install Yggdrasill501/collie</code></pre>
+        <pre tabindex="0" aria-label="Install command"><code>herdr plugin install Yggdrasill501/border-collie</code></pre>
         <button class="copy" type="button" aria-label="Copy install command">
           <svg class="i-copy" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M10.5 3.5v-.5a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h.5" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
           <svg class="i-done" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 8.5l3.2 3.2L13 4.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -275,13 +275,13 @@
       </div>
 
       <p class="actions">
-        <a href="https://github.com/Yggdrasill501/collie">
+        <a href="https://github.com/Yggdrasill501/border-collie">
           <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 .2a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.33c-2.23.48-2.7-1.07-2.7-1.07-.36-.93-.89-1.17-.89-1.17-.73-.5.05-.49.05-.49.8.06 1.23.83 1.23.83.72 1.22 1.88.87 2.34.66.07-.52.28-.87.5-1.07-1.77-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.19c0 .21.15.46.55.38A8 8 0 0 0 8 .2Z"/></svg>
           Source on GitHub
         </a>
-        <a href="https://github.com/Yggdrasill501/collie#readme">Read the docs</a>
+        <a href="https://github.com/Yggdrasill501/border-collie#readme">Read the docs</a>
       </p>
-      <p class="meta">v0.3.0 · MIT · Linux and macOS · written in Rust</p>
+      <p class="meta">v0.4.0 · MIT · Linux and macOS · written in Rust</p>
     </div>
   </div>
 
@@ -289,7 +289,7 @@
     <div class="wrap wrap--wide">
       <h2 id="demo-title" class="visually-hidden">Before and after</h2>
       <div class="demo">
-        <figure class="term term--before" aria-label="Before collie">
+        <figure class="term term--before" aria-label="Before border-collie">
           <div class="term__title"><span>before</span><span aria-hidden="true">herdr</span></div>
           <div class="term__body">
             <h3>spaces</h3>
@@ -315,8 +315,8 @@
 
         <div class="demo__arrow" aria-hidden="true">→</div>
 
-        <figure class="term term--after" aria-label="After collie">
-          <div class="term__title"><span>after</span><span aria-hidden="true">herdr + collie</span></div>
+        <figure class="term term--after" aria-label="After border-collie">
+          <div class="term__title"><span>after</span><span aria-hidden="true">herdr + border-collie</span></div>
           <div class="term__body">
             <h3>spaces</h3>
             <ol class="spaces">
@@ -405,9 +405,9 @@
             <span class="copy__label">Copy</span>
           </button>
         </div>
-        <pre tabindex="0" aria-label="Install command"><code>herdr plugin install Yggdrasill501/collie</code></pre>
+        <pre tabindex="0" aria-label="Install command"><code>herdr plugin install Yggdrasill501/border-collie</code></pre>
       </div>
-      <p>That is all: collie starts working on the next space switch or agent update. To apply it to everything immediately:</p>
+      <p>That is all: border-collie starts working on the next space switch or agent update. To apply it to everything immediately:</p>
       <div class="code code--sh">
         <div class="code__bar"><span>shell</span>
           <button class="copy" type="button" aria-label="Copy command to name everything now">
@@ -416,7 +416,7 @@
             <span class="copy__label">Copy</span>
           </button>
         </div>
-        <pre tabindex="0" aria-label="Command to name everything now"><code>herdr plugin action invoke collie.name</code></pre>
+        <pre tabindex="0" aria-label="Command to name everything now"><code>herdr plugin action invoke border-collie.name</code></pre>
       </div>
       <p>To update, run the install command again. To remove it:</p>
       <div class="code code--sh">
@@ -427,7 +427,7 @@
             <span class="copy__label">Copy</span>
           </button>
         </div>
-        <pre tabindex="0" aria-label="Uninstall command"><code>herdr plugin uninstall collie</code></pre>
+        <pre tabindex="0" aria-label="Uninstall command"><code>herdr plugin uninstall border-collie</code></pre>
       </div>
     </div>
   </section>
@@ -435,16 +435,16 @@
   <section id="configuration" aria-labelledby="configuration-title">
     <div class="wrap">
       <h2 id="configuration-title"><span class="hash" aria-hidden="true">#</span>Configuration</h2>
-      <p>collie works without configuration. To change a setting, create <code>config.toml</code> in the plugin's config directory, which <code>herdr plugin config-dir collie</code> prints:</p>
+      <p>border-collie works without configuration. To change a setting, create <code>config.toml</code> in the plugin's config directory, which <code>herdr plugin config-dir border-collie</code> prints:</p>
       <div class="code">
         <div class="code__bar"><span>config.toml</span>
-          <button class="copy" type="button" aria-label="Copy collie configuration">
+          <button class="copy" type="button" aria-label="Copy border-collie configuration">
             <svg class="i-copy" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M10.5 3.5v-.5a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h.5" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
             <svg class="i-done" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 8.5l3.2 3.2L13 4.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             <span class="copy__label">Copy</span>
           </button>
         </div>
-        <pre tabindex="0" aria-label="collie configuration with default values"><code>sort_spaces   = true   <span class="c"># move the focused space to the top</span>
+        <pre tabindex="0" aria-label="border-collie configuration with default values"><code>sort_spaces   = true   <span class="c"># move the focused space to the top</span>
 name_tabs     = true   <span class="c"># name tabs after their agents</span>
 name_agents   = true   <span class="c"># name agents after their work</span>
 dwell_ms      = 1000   <span class="c"># how long a space must stay focused before it moves</span>
@@ -479,10 +479,10 @@ switch_tab       = "prefix+shift+1..9"</code></pre>
             <span class="copy__label">Copy</span>
           </button>
         </div>
-        <pre tabindex="0" aria-label="Key binding that runs collie.toggle-pin"><code>[[keys.command]]
+        <pre tabindex="0" aria-label="Key binding that runs border-collie.toggle-pin"><code>[[keys.command]]
 key = "prefix+shift+p"
 type = "plugin_action"
-command = "collie.toggle-pin"
+command = "border-collie.toggle-pin"
 description = "pin or unpin this space"</code></pre>
       </div>
       <p>Open the agent picker:</p>
@@ -494,10 +494,10 @@ description = "pin or unpin this space"</code></pre>
             <span class="copy__label">Copy</span>
           </button>
         </div>
-        <pre tabindex="0" aria-label="Key binding that runs collie.pick-agent"><code>[[keys.command]]
+        <pre tabindex="0" aria-label="Key binding that runs border-collie.pick-agent"><code>[[keys.command]]
 key = "prefix+a"
 type = "plugin_action"
-command = "collie.pick-agent"
+command = "border-collie.pick-agent"
 description = "jump to an agent"</code></pre>
       </div>
       <p>To rename everything on demand:</p>
@@ -509,10 +509,10 @@ description = "jump to an agent"</code></pre>
             <span class="copy__label">Copy</span>
           </button>
         </div>
-        <pre tabindex="0" aria-label="Key binding that runs collie.name"><code>[[keys.command]]
+        <pre tabindex="0" aria-label="Key binding that runs border-collie.name"><code>[[keys.command]]
 key = "prefix+shift+c"
 type = "plugin_action"
-command = "collie.name"
+command = "border-collie.name"
 description = "name tabs and agents"</code></pre>
       </div>
     </div>
@@ -541,19 +541,19 @@ description = "name tabs and agents"</code></pre>
         </table>
       </div>
       <p>When a title is empty or generic (<code>Claude Code</code>), the directory name is used instead. Two agents that would get the same name become <code>meety</code> and <code>meety-2</code>.</p>
-      <p>collie only renames a tab that still has herdr's numeric label, or an agent that has no name, or one whose current name collie set. Rename something yourself and collie leaves it alone from then on. To hand a tab back, rename it to a number.</p>
-      <p class="lead">How it works and troubleshooting are covered in the <a href="https://github.com/Yggdrasill501/collie#readme">README</a>.</p>
+      <p>border-collie only renames a tab that still has herdr's numeric label, or an agent that has no name, or one whose current name border-collie set. Rename something yourself and border-collie leaves it alone from then on. To hand a tab back, rename it to a number.</p>
+      <p class="lead">How it works and troubleshooting are covered in the <a href="https://github.com/Yggdrasill501/border-collie#readme">README</a>.</p>
     </div>
   </section>
 </main>
 
 <footer>
   <div class="wrap wrap--wide">
-    <p>collie v0.3.0 · <a href="https://github.com/Yggdrasill501/collie/blob/HEAD/LICENSE">MIT license</a></p>
+    <p>border-collie v0.4.0 · <a href="https://github.com/Yggdrasill501/border-collie/blob/HEAD/LICENSE">MIT license</a></p>
     <ul>
-      <li><a href="https://github.com/Yggdrasill501/collie">GitHub</a></li>
-      <li><a href="https://github.com/Yggdrasill501/collie/blob/HEAD/CHANGELOG.md">Changelog</a></li>
-      <li><a href="https://github.com/Yggdrasill501/collie/blob/HEAD/CONTRIBUTING.md">Contributing</a></li>
+      <li><a href="https://github.com/Yggdrasill501/border-collie">GitHub</a></li>
+      <li><a href="https://github.com/Yggdrasill501/border-collie/blob/HEAD/CHANGELOG.md">Changelog</a></li>
+      <li><a href="https://github.com/Yggdrasill501/border-collie/blob/HEAD/CONTRIBUTING.md">Contributing</a></li>
       <li><a href="https://herdr.dev">herdr</a></li>
     </ul>
   </div>
