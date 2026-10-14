@@ -372,6 +372,11 @@
           <h3>Agent picker</h3>
           <p>One key opens a list of every agent, most recently active first. Press a digit to jump straight there.</p>
         </li>
+        <li class="feature">
+          <span class="num" aria-hidden="true">06</span>
+          <h3>Next agent that needs you</h3>
+          <p>One key jumps to an agent that is blocked on a question or has finished, without opening anything.</p>
+        </li>
       </ul>
       <dl class="also">
         <div>
@@ -499,6 +504,21 @@ key = "prefix+a"
 type = "plugin_action"
 command = "border-collie.pick-agent"
 description = "jump to an agent"</code></pre>
+      </div>
+      <p>Jump to the next agent that is blocked or has finished:</p>
+      <div class="code">
+        <div class="code__bar"><span>herdr config.toml</span>
+          <button class="copy" type="button" aria-label="Copy next agent key binding">
+            <svg class="i-copy" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M10.5 3.5v-.5a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h.5" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            <svg class="i-done" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 8.5l3.2 3.2L13 4.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="copy__label">Copy</span>
+          </button>
+        </div>
+        <pre tabindex="0" aria-label="Key binding that runs border-collie.next-attention"><code>[[keys.command]]
+key = "prefix+shift+a"
+type = "plugin_action"
+command = "border-collie.next-attention"
+description = "next agent needing attention"</code></pre>
       </div>
       <p>To rename everything on demand:</p>
       <div class="code">
