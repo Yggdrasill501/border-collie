@@ -6,6 +6,8 @@ All notable changes to collie are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-14
+
 ### Added
 
 - Pinned spaces: the `collie.toggle-pin` action pins the current space to a
@@ -41,6 +43,7 @@ All notable changes to collie are documented here. The format follows
 - Spaces are kept sorted by most recently focused.
 - Tabs are named after their most recently active agent.
 
-[Unreleased]: https://github.com/Yggdrasill501/collie/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/Yggdrasill501/collie/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/Yggdrasill501/collie/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/Yggdrasill501/collie/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/Yggdrasill501/collie/releases/tag/v0.1.0

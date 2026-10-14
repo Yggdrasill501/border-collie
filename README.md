@@ -6,6 +6,8 @@
 A [herdr](https://herdr.dev) plugin that keeps the herd in order: spaces sorted
 by recent use, and tabs and agents named after the work happening in them.
 
+**[Website](https://yggdrasill501.github.io/collie/)** · [Changelog](CHANGELOG.md)
+
 ```text
  before                         after
  ──────                         ─────
