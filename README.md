@@ -35,7 +35,7 @@ their work, and a picker to jump between agents.
   a question or has finished, without opening anything.
 - **Your names win.** Tabs and agents you rename yourself are never touched.
 - **No background process.** herdr runs a small Rust binary from its event
-  hooks; a naming run takes a few milliseconds.
+  hooks; a naming run typically takes a few milliseconds.
 
 ## Requirements
 
