@@ -1,6 +1,7 @@
 # border-collie
 
 [![CI](https://github.com/Yggdrasill501/border-collie/actions/workflows/ci.yml/badge.svg)](https://github.com/Yggdrasill501/border-collie/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/Yggdrasill501/border-collie)](https://github.com/Yggdrasill501/border-collie/releases)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 A [herdr](https://herdr.dev) plugin that keeps the herd in order: spaces sorted
@@ -8,19 +9,11 @@ by recent use, and tabs and agents named after the work happening in them.
 
 **[Website](https://yggdrasill501.github.io/border-collie/)** · [Changelog](CHANGELOG.md)
 
-```text
- before                         after
- ──────                         ─────
- spaces   1 ~                   1 meety-clone      ← where you are
-          2 meety               2 meety            ← where you were
-          3 daily-log           3 ~
-          4 meety-clone         4 daily-log
-
- tabs     1 │ 2 │ 3             PR 457 │ Linear tasks needing at… │ meety
-
- agents   w9:p1                 pr-457
-          w6:p3                 linear-tasks-needing-attention
-```
+<p align="center">
+  <img src="docs/demo.svg" alt="Before: spaces in creation order, tabs labelled 1, 2, 3, agents known by pane id. After: the current space first and the previous one second, tabs and agents named after the work in them." width="820">
+  <br>
+  <sub>Illustration, not a screenshot.</sub>
+</p>
 
 ## Features
 

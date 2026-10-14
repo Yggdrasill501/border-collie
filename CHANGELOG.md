@@ -6,6 +6,8 @@ All notable changes to border-collie are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-10-14
+
 ### Added
 
 - `border-collie.next-attention` action: jumps to the next agent that is
@@ -18,6 +20,8 @@ All notable changes to border-collie are documented here. The format follows
 
 - The agent picker starts on the first agent other than the focused one, so
   opening it and pressing enter switches to the previous agent.
+
+- Names are also refreshed when a pane's process exits.
 
 ### Fixed
 
@@ -92,7 +96,8 @@ herdr project named collie. Earlier entries below use the old name.
 - Spaces are kept sorted by most recently focused.
 - Tabs are named after their most recently active agent.
 
-[Unreleased]: https://github.com/Yggdrasill501/border-collie/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/Yggdrasill501/border-collie/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/Yggdrasill501/border-collie/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/Yggdrasill501/border-collie/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/Yggdrasill501/border-collie/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/Yggdrasill501/border-collie/compare/v0.1.0...v0.2.0

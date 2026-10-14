@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 400" width="920" height="400" role="img" aria-labelledby="title desc" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
+<title id="title">herdr before and after border-collie</title>
+<desc id="desc">Illustration. Before: spaces in creation order, tabs labelled 1, 2, 3, agents known by pane id. After: the current space first and the previous one second, tabs and agents named after the work in them.</desc>
+<rect width="920" height="400" rx="12" fill="#131211"/>
+<rect x="24" y="24" width="410" height="352" rx="10" fill="#1b1a18" stroke="#2e2b27"/>
+<text x="44" y="50" fill="#a69f93" font-size="12" font-weight="normal" text-anchor="start">before</text>
+<text x="414" y="50" fill="#a69f93" font-size="12" font-weight="normal" text-anchor="end">herdr</text>
+<line x1="24" y1="62" x2="434" y2="62" stroke="#2e2b27"/>
+<text x="44" y="90" fill="#a69f93" font-size="11" font-weight="normal" text-anchor="start">SPACES</text>
+<text x="44" y="114" fill="#a69f93" font-size="14" font-weight="normal" text-anchor="start">1</text>
+<text x="68" y="114" fill="#ebe6dd" font-size="14" font-weight="normal" text-anchor="start">~</text>
+<text x="44" y="139" fill="#a69f93" font-size="14" font-weight="normal" text-anchor="start">2</text>
+<text x="68" y="139" fill="#ebe6dd" font-size="14" font-weight="normal" text-anchor="start">meety</text>
+<text x="44" y="164" fill="#a69f93" font-size="14" font-weight="normal" text-anchor="start">3</text>
+<text x="68" y="164" fill="#ebe6dd" font-size="14" font-weight="normal" text-anchor="start">daily-log</text>
+<rect x="36" y="173" width="386" height="23" rx="4" fill="#35281b"/>
+<text x="44" y="189" fill="#a69f93" font-size="14" font-weight="normal" text-anchor="start">4</text>
+<text x="68" y="189" fill="#ebe6dd" font-size="14" font-weight="bold" text-anchor="start">meety-clone</text>
+<text x="44" y="236" fill="#a69f93" font-size="11" font-weight="normal" text-anchor="start">TABS</text>
+<rect x="44" y="248" width="48" height="28" fill="none" stroke="#2e2b27"/>
+<rect x="44" y="274" width="48" height="2" fill="#e9a765"/>
+<text x="68.0" y="267" fill="#ebe6dd" font-size="13" font-weight="normal" text-anchor="middle">1</text>
+<rect x="92" y="248" width="48" height="28" fill="none" stroke="#2e2b27"/>
+<text x="116.0" y="267" fill="#a69f93" font-size="13" font-weight="normal" text-anchor="middle">2</text>
+<rect x="140" y="248" width="48" height="28" fill="none" stroke="#2e2b27"/>
+<text x="164.0" y="267" fill="#a69f93" font-size="13" font-weight="normal" text-anchor="middle">3</text>
+<text x="44" y="308" fill="#a69f93" font-size="11" font-weight="normal" text-anchor="start">AGENTS</text>
+<text x="44" y="332" fill="#a69f93" font-size="14" font-weight="normal" text-anchor="start">›</text>
+<text x="60" y="332" fill="#ebe6dd" font-size="14" font-weight="normal" text-anchor="start">w9:p1</text>
+<text x="44" y="356" fill="#a69f93" font-size="14" font-weight="normal" text-anchor="start">›</text>
+<text x="60" y="356" fill="#ebe6dd" font-size="14" font-weight="normal" text-anchor="start">w6:p3</text>
+<text x="460" y="206" fill="#a69f93" font-size="20" font-weight="normal" text-anchor="middle">→</text>
+<rect x="486" y="24" width="410" height="352" rx="10" fill="#1b1a18" stroke="#2e2b27"/>
+<text x="506" y="50" fill="#a69f93" font-size="12" font-weight="normal" text-anchor="start">after</text>
+<text x="876" y="50" fill="#a69f93" font-size="12" font-weight="normal" text-anchor="end">herdr + border-collie</text>
+<line x1="486" y1="62" x2="896" y2="62" stroke="#2e2b27"/>
+<text x="506" y="90" fill="#a69f93" font-size="11" font-weight="normal" text-anchor="start">SPACES</text>
+<rect x="498" y="98" width="386" height="23" rx="4" fill="#35281b"/>
+<text x="506" y="114" fill="#a69f93" font-size="14" font-weight="normal" text-anchor="start">1</text>
+<text x="530" y="114" fill="#ebe6dd" font-size="14" font-weight="bold" text-anchor="start">meety-clone</text>
+<text x="876" y="114" fill="#a69f93" font-size="12" font-weight="normal" text-anchor="end">where you are</text>
+<text x="506" y="139" fill="#a69f93" font-size="14" font-weight="normal" text-anchor="start">2</text>
+<text x="530" y="139" fill="#ebe6dd" font-size="14" font-weight="normal" text-anchor="start">meety</text>
+<text x="876" y="139" fill="#a69f93" font-size="12" font-weight="normal" text-anchor="end">where you were</text>
+<text x="506" y="164" fill="#a69f93" font-size="14" font-weight="normal" text-anchor="start">3</text>
+<text x="530" y="164" fill="#ebe6dd" font-size="14" font-weight="normal" text-anchor="start">~</text>
+<text x="506" y="189" fill="#a69f93" font-size="14" font-weight="normal" text-anchor="start">4</text>
+<text x="530" y="189" fill="#ebe6dd" font-size="14" font-weight="normal" text-anchor="start">daily-log</text>
+<text x="506" y="236" fill="#a69f93" font-size="11" font-weight="normal" text-anchor="start">TABS</text>
+<rect x="506" y="248" width="78" height="28" fill="none" stroke="#2e2b27"/>
+<rect x="506" y="274" width="78" height="2" fill="#e9a765"/>
+<text x="545.0" y="267" fill="#ebe6dd" font-size="13" font-weight="normal" text-anchor="middle">PR 457</text>
+<rect x="584" y="248" width="214" height="28" fill="none" stroke="#2e2b27"/>
+<text x="691.0" y="267" fill="#a69f93" font-size="13" font-weight="normal" text-anchor="middle">Linear tasks needing at…</text>
+<rect x="798" y="248" width="70" height="28" fill="none" stroke="#2e2b27"/>
+<text x="833.0" y="267" fill="#a69f93" font-size="13" font-weight="normal" text-anchor="middle">meety</text>
+<text x="506" y="308" fill="#a69f93" font-size="11" font-weight="normal" text-anchor="start">AGENTS</text>
+<text x="506" y="332" fill="#a69f93" font-size="14" font-weight="normal" text-anchor="start">›</text>
+<text x="522" y="332" fill="#ebe6dd" font-size="14" font-weight="normal" text-anchor="start">pr-457</text>
+<text x="506" y="356" fill="#a69f93" font-size="14" font-weight="normal" text-anchor="start">›</text>
+<text x="522" y="356" fill="#ebe6dd" font-size="14" font-weight="normal" text-anchor="start">linear-tasks-needing-attention</text>
+</svg>
