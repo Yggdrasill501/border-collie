@@ -3,9 +3,11 @@
 mod agents;
 mod attention;
 mod config;
+mod doctor;
 mod herdr;
 mod label;
 mod picker;
+mod reset;
 mod spaces;
 mod state;
 mod tabs;
@@ -27,6 +29,8 @@ commands:
   pick         choose an agent to jump to, in this terminal
   open-picker  open the agent picker in a herdr popup
   next         jump to the next agent that needs attention
+  reset        restore tab numbers, clear agent names and forget pins
+  doctor       report versions, settings and saved state
   --version    print the version";
 
 fn sort_spaces(config: &Config, dwell: Duration) -> herdr::Result<()> {
@@ -80,6 +84,8 @@ fn run(command: &str) -> herdr::Result<()> {
         "pins" => spaces::list_pins(),
         "next" => attention::jump(),
         "pick" => picker::run(),
+        "reset" => reset::run(),
+        "doctor" => doctor::run(),
         "open-picker" => picker::open(),
         "startup" => {
             let config = config::load();

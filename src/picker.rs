@@ -27,6 +27,7 @@ pub fn open() -> Result<()> {
 
 struct Row {
     pane: String,
+    focused: bool,
     status: String,
     space: String,
     label: String,
@@ -46,6 +47,7 @@ fn rows(agents: &[Value], spaces: &[Value]) -> Vec<Row> {
             let space = agent["workspace_id"].as_str().unwrap_or("");
             Some(Row {
                 pane: agent["pane_id"].as_str()?.to_string(),
+                focused: agent["focused"] == true,
                 status: agent["agent_status"]
                     .as_str()
                     .unwrap_or("unknown")
@@ -58,6 +60,12 @@ fn rows(agents: &[Value], spaces: &[Value]) -> Vec<Row> {
             })
         })
         .collect()
+}
+
+/// Starts on the first agent other than the one in focus, so that opening
+/// the picker and pressing enter switches to the previous agent.
+fn initial_selection(rows: &[Row]) -> usize {
+    rows.iter().position(|row| !row.focused).unwrap_or(0)
 }
 
 #[derive(Debug, PartialEq)]
@@ -260,7 +268,7 @@ pub fn run() -> Result<()> {
     let size = terminal_size();
     let mut input = io::stdin().lock();
     let mut out = io::stdout().lock();
-    let (mut selected, mut offset) = (0, 0);
+    let (mut selected, mut offset) = (initial_selection(&rows), 0);
     let chosen = loop {
         offset = scroll_offset(selected, offset, size.0.saturating_sub(2));
         draw(&mut out, &rows, selected, offset, size)?;
@@ -322,6 +330,16 @@ mod tests {
     }
 
     #[test]
+    fn selection_starts_off_the_focused_agent() {
+        let mut here = agent("w1:p1", "w1", 9, "Here");
+        here["focused"] = json!(true);
+        let agents = [here.clone(), agent("w2:p1", "w2", 3, "There")];
+        assert_eq!(initial_selection(&rows(&agents, &[])), 1);
+        assert_eq!(initial_selection(&rows(&[here], &[])), 0);
+        assert_eq!(initial_selection(&[]), 0);
+    }
+
+    #[test]
     fn digits_choose_only_existing_rows() {
         assert_eq!(step(0, 3, Key::Digit(3)), Step::Choose(2));
         assert_eq!(step(1, 3, Key::Digit(4)), Step::Select(1));
@@ -378,6 +396,7 @@ mod tests {
     fn rows_fit_the_terminal_width() {
         let row = Row {
             pane: "w1:p1".into(),
+            focused: false,
             status: "working".into(),
             space: "a-very-long-space-name-indeed".into(),
             label: "A long title that will not fit".into(),

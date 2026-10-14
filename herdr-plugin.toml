@@ -57,6 +57,18 @@ title = "Jump to the next agent that needs attention"
 contexts = ["workspace"]
 command = ["target/release/border-collie", "next"]
 
+[[actions]]
+id = "reset"
+title = "Remove the names and pins border-collie has set"
+contexts = ["workspace"]
+command = ["target/release/border-collie", "reset"]
+
+[[actions]]
+id = "doctor"
+title = "Write a health report to the plugin log"
+contexts = ["workspace"]
+command = ["target/release/border-collie", "doctor"]
+
 # Agent picker, opened by the pick-agent action.
 [[panes]]
 id = "agents"

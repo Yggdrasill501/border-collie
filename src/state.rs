@@ -6,7 +6,7 @@
 use std::collections::HashMap;
 use std::env;
 use std::fs::{self, File};
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 use serde_json::{json, Value};
 
@@ -87,6 +87,11 @@ impl Store {
             dir: Some(dir),
             _lock: Some(lock),
         })
+    }
+
+    /// The directory the state is kept in, if one could be determined.
+    pub fn dir(&self) -> Option<&Path> {
+        self.dir.as_deref()
     }
 
     pub fn load(&self) -> State {

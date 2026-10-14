@@ -10,6 +10,18 @@ All notable changes to border-collie are documented here. The format follows
 
 - `border-collie.next-attention` action: jumps to the next agent that is
   blocked or has finished, blocked agents first.
+- `border-collie.reset` action: restores tab numbers, clears agent names and
+  forgets pins, for a clean uninstall.
+- `border-collie.doctor` action: reports versions, settings and saved state.
+
+### Changed
+
+- The agent picker starts on the first agent other than the focused one, so
+  opening it and pressing enter switches to the previous agent.
+
+### Fixed
+
+- Commands run by hand now read `config.toml` instead of using defaults.
 
 ## [0.4.0] - 2026-10-14
 

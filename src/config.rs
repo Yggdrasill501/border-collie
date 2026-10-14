@@ -32,18 +32,36 @@ impl Default for Config {
     }
 }
 
-fn config_file() -> Option<PathBuf> {
-    env::var_os("HERDR_PLUGIN_CONFIG_DIR").map(|dir| PathBuf::from(dir).join("config.toml"))
+/// Where the config lives. herdr passes the directory to plugin commands;
+/// the fallback is the same location, for runs outside a plugin hook.
+pub fn config_file() -> Option<PathBuf> {
+    let dir = match env::var_os("HERDR_PLUGIN_CONFIG_DIR") {
+        Some(dir) => PathBuf::from(dir),
+        None => {
+            let base = match env::var_os("XDG_CONFIG_HOME") {
+                Some(dir) => PathBuf::from(dir),
+                None => PathBuf::from(env::var_os("HOME")?).join(".config"),
+            };
+            base.join("herdr/plugins/config/border-collie")
+        }
+    };
+    Some(dir.join("config.toml"))
+}
+
+/// The config as read from disk, with any problems found, or `None` when
+/// there is no config file.
+pub fn read() -> Option<(Config, Vec<String>)> {
+    let text = fs::read_to_string(config_file()?).ok()?;
+    Some(parse(&text))
 }
 
 /// Loads the config, falling back to defaults for anything missing or
 /// invalid. Problems are reported on stderr, which herdr keeps in the plugin
 /// log.
 pub fn load() -> Config {
-    let Some(text) = config_file().and_then(|path| fs::read_to_string(path).ok()) else {
+    let Some((config, warnings)) = read() else {
         return Config::default();
     };
-    let (config, warnings) = parse(&text);
     for warning in warnings {
         eprintln!("border-collie: config.toml: {warning}");
     }

@@ -11,7 +11,7 @@ body:
   - type: textarea
     attributes:
       label: Plugin log
-      description: Output of `herdr plugin log list --plugin border-collie`.
+      description: Run `herdr plugin action invoke border-collie.doctor`, then paste the output of `herdr plugin log list --plugin border-collie`.
       render: shell
   - type: input
     attributes:

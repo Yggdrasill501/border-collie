@@ -61,11 +61,21 @@ To apply it to everything immediately:
 herdr plugin action invoke border-collie.name
 ```
 
-To update, run the install command again. To remove it:
+To update, run the install command again.
+
+### Uninstalling
+
+Tab labels and agent names are stored by herdr, so they outlive the plugin.
+To leave things as you found them, reset first:
 
 ```bash
+herdr plugin action invoke border-collie.reset   # tabs back to numbers, agent names cleared, pins forgotten
 herdr plugin uninstall border-collie
 ```
+
+`reset` only touches names border-collie set; anything you named yourself
+stays. It is also the way to clean up after switching `name_tabs` or
+`name_agents` off.
 
 ## Configuration
 
@@ -219,6 +229,8 @@ Each run talks to herdr over its socket API and exits.
 | `border-collie startup` | herdr startup | Does both immediately. |
 | `border-collie pin` | the `toggle-pin` action | Pins or unpins the current space. |
 | `border-collie next` | the `next-attention` action | Jumps to the next agent that needs attention. |
+| `border-collie reset` | the `reset` action | Restores tab numbers, clears agent names, forgets pins. |
+| `border-collie doctor` | the `doctor` action | Reports versions, settings and saved state. |
 | `border-collie pick` | the `pick-agent` action, in a popup | Shows the agent picker. |
 
 ## Troubleshooting
@@ -227,6 +239,13 @@ See what border-collie did, and any errors:
 
 ```bash
 herdr plugin log list --plugin border-collie
+```
+
+For a summary of versions, settings and saved state, run the health report
+and read it from the same log:
+
+```bash
+herdr plugin action invoke border-collie.doctor
 ```
 
 - **Nothing happens after install.** Check that `herdr plugin list` shows

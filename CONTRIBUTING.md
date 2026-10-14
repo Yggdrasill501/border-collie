@@ -37,6 +37,7 @@ cargo test
 | `src/spaces.rs` | Recent-first space ordering. |
 | `src/tabs.rs`, `src/agents.rs` | Tab and agent naming. |
 | `src/attention.rs` | Jumping to the agent that needs attention. |
+| `src/reset.rs`, `src/doctor.rs` | Undoing names and pins; the health report. |
 | `src/picker.rs` | Interactive agent picker. |
 | `src/label.rs` | Turning titles into labels and names. |
 | `src/config.rs`, `src/state.rs` | Settings and remembered names. |
