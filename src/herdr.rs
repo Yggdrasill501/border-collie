@@ -10,7 +10,7 @@ use serde_json::{json, Value};
 
 pub type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 
-fn socket_path() -> PathBuf {
+pub fn socket_path() -> PathBuf {
     if let Some(path) = env::var_os("HERDR_SOCKET_PATH") {
         return PathBuf::from(path);
     }
@@ -49,4 +49,12 @@ pub fn list(method: &str, key: &str) -> Result<Vec<Value>> {
         Value::Array(items) => Ok(items),
         _ => Err(format!("{method}: missing `{key}`").into()),
     }
+}
+
+/// Agents herdr currently detects. Panes whose agent has just exited are
+/// still listed for a moment with no agent kind, and are left out.
+pub fn agents() -> Result<Vec<Value>> {
+    let mut agents = list("agent.list", "agents")?;
+    agents.retain(|agent| agent["agent"].is_string());
+    Ok(agents)
 }

@@ -6,6 +6,32 @@ All notable changes to border-collie are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-10-15
+
+### Added
+
+- `sort_by = "status"` setting: groups unpinned spaces by their most urgent
+  agent (blocked, done, working, idle), most recently focused first within
+  each group. Requested in herdr discussion
+  [#1407](https://github.com/herdrdev/herdr/discussions/1407).
+- The agent picker shows each agent's name, so agents with the same title can
+  be told apart.
+
+### Changed
+
+- Agent names that are too long are cut at a word boundary.
+- Config mistakes are reported once at startup and by `doctor`, instead of on
+  every hook run.
+
+### Fixed
+
+- Pins and names are kept per herdr session. Before, two sessions shared one
+  state file, so a pin in one session pinned the space with the same id in
+  the other, and starting a second session made names in the first look
+  hand-set.
+- When an agent exits, its tab no longer briefly takes the shell's title, and
+  no `agent.rename` errors are logged.
+
 ## [0.5.0] - 2026-10-14
 
 ### Added
@@ -96,7 +122,8 @@ herdr project named collie. Earlier entries below use the old name.
 - Spaces are kept sorted by most recently focused.
 - Tabs are named after their most recently active agent.
 
-[Unreleased]: https://github.com/Yggdrasill501/border-collie/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/Yggdrasill501/border-collie/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/Yggdrasill501/border-collie/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/Yggdrasill501/border-collie/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/Yggdrasill501/border-collie/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/Yggdrasill501/border-collie/compare/v0.2.0...v0.3.0

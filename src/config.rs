@@ -6,10 +6,39 @@ use std::path::PathBuf;
 
 const SHORTEST_TAB_LABEL: usize = 4;
 
+/// How unpinned spaces are ordered.
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum SortBy {
+    /// Most recently focused first.
+    Recent,
+    /// Spaces whose agents need attention first (blocked, done, working,
+    /// idle), most recently focused first within each group.
+    Status,
+}
+
+impl SortBy {
+    fn parse(value: &str) -> Option<Self> {
+        match value.trim_matches('"') {
+            "recent" => Some(Self::Recent),
+            "status" => Some(Self::Status),
+            _ => None,
+        }
+    }
+
+    pub fn name(self) -> &'static str {
+        match self {
+            Self::Recent => "recent",
+            Self::Status => "status",
+        }
+    }
+}
+
 #[derive(Debug, PartialEq)]
 pub struct Config {
     /// Move the focused space to the top of the list.
     pub sort_spaces: bool,
+    /// How unpinned spaces are ordered.
+    pub sort_by: SortBy,
     /// Rename tabs after their most recently active agent.
     pub name_tabs: bool,
     /// Give agents a name based on what they are working on.
@@ -24,6 +53,7 @@ impl Default for Config {
     fn default() -> Self {
         Self {
             sort_spaces: true,
+            sort_by: SortBy::Recent,
             name_tabs: true,
             name_agents: true,
             dwell_ms: 1000,
@@ -56,16 +86,19 @@ pub fn read() -> Option<(Config, Vec<String>)> {
 }
 
 /// Loads the config, falling back to defaults for anything missing or
-/// invalid. Problems are reported on stderr, which herdr keeps in the plugin
-/// log.
+/// invalid. Problems are not reported here, or every hook run would repeat
+/// them; `startup` and `doctor` report them.
 pub fn load() -> Config {
-    let Some((config, warnings)) = read() else {
-        return Config::default();
-    };
+    read().map(|(config, _)| config).unwrap_or_default()
+}
+
+/// Reports problems in the config on stderr, which herdr keeps in the
+/// plugin log.
+pub fn warn() {
+    let warnings = read().map(|(_, warnings)| warnings).unwrap_or_default();
     for warning in warnings {
         eprintln!("border-collie: config.toml: {warning}");
     }
-    config
 }
 
 /// Parses flat `key = value` lines. This is the subset of TOML the config
@@ -85,6 +118,7 @@ fn parse(text: &str) -> (Config, Vec<String>) {
         let (key, value) = (key.trim(), value.trim());
         let applied = match key {
             "sort_spaces" => value.parse().map(|v| config.sort_spaces = v).is_ok(),
+            "sort_by" => SortBy::parse(value).map(|v| config.sort_by = v).is_some(),
             "name_tabs" => value.parse().map(|v| config.name_tabs = v).is_ok(),
             "name_agents" => value.parse().map(|v| config.name_agents = v).is_ok(),
             "dwell_ms" => value.parse().map(|v| config.dwell_ms = v).is_ok(),
@@ -121,20 +155,22 @@ mod tests {
 
     #[test]
     fn reads_every_setting() {
-        let text = "
+        let text = r#"
             # turn naming off
             sort_spaces = false
+            sort_by = "status"
             name_tabs = false   # trailing comment
             name_agents = false
             dwell_ms = 250
             tab_label_max = 40
-        ";
+        "#;
         let (config, warnings) = parse(text);
         assert!(warnings.is_empty());
         assert_eq!(
             config,
             Config {
                 sort_spaces: false,
+                sort_by: SortBy::Status,
                 name_tabs: false,
                 name_agents: false,
                 dwell_ms: 250,
@@ -145,9 +181,10 @@ mod tests {
 
     #[test]
     fn invalid_lines_warn_and_keep_defaults() {
-        let (config, warnings) = parse("dwell_ms = soon\nspeed = 3\nnonsense\n");
+        let (config, warnings) =
+            parse("dwell_ms = soon\nspeed = 3\nnonsense\nsort_by = \"name\"\n");
         assert_eq!(config, Config::default());
-        assert_eq!(warnings.len(), 3);
+        assert_eq!(warnings.len(), 4);
         assert!(warnings[0].contains("line 1") && warnings[0].contains("dwell_ms"));
         assert!(warnings[1].contains("unknown setting `speed`"));
         assert!(warnings[2].contains("line 3"));

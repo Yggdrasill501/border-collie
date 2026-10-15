@@ -25,7 +25,10 @@ their work, and a picker to jump between agents.
   most recently active agent, or the directory name when the title is generic.
 - **Agents named after their work.** Each agent gets a unique name such as
   `pr-457`, which herdr accepts anywhere it takes an agent:
-  `herdr agent focus pr-457`.
+  `herdr agent focus pr-457`. The name follows the work, so it changes when
+  the agent's title does; name an agent yourself for a handle scripts can rely on.
+- **Or sorted by who needs you.** With `sort_by = "status"`, spaces with a
+  blocked agent come first, then finished, working and idle ones.
 - **Pinned spaces.** Pin the spaces you live in to fixed top slots, the way
   [harpoon](https://github.com/ThePrimeagen/harpoon) pins files. Everything
   else stays sorted by recent use below them.
@@ -55,7 +58,9 @@ update. To apply it to everything immediately:
 herdr plugin action invoke border-collie.name
 ```
 
-To update, run the install command again.
+To update, run the install command again. If you linked a local checkout
+with `herdr plugin link`, pull and rebuild it instead (`git pull && cargo
+build --release`); herdr refuses to install over a linked plugin.
 
 ### Uninstalling
 
@@ -69,7 +74,8 @@ herdr plugin uninstall border-collie
 
 `reset` only touches names border-collie set; anything you named yourself
 stays. It is also the way to clean up after switching `name_tabs` or
-`name_agents` off.
+`name_agents` off. While the plugin is installed and naming is on, the next
+agent event names things again, so reset right before uninstalling.
 
 ## Configuration
 
@@ -79,6 +85,7 @@ prints:
 
 ```toml
 sort_spaces   = true   # move the focused space to the top
+sort_by       = "recent"  # or "status": spaces needing attention first
 name_tabs     = true   # name tabs after their agents
 name_agents   = true   # name agents after their work
 dwell_ms      = 1000   # how long a space must stay focused before it moves
@@ -86,7 +93,13 @@ tab_label_max = 24     # longest tab label, in characters
 ```
 
 Every line is optional; the values above are the defaults. Changes apply on
-the next hook run, with no reload.
+the next hook run, with no reload. Mistakes in the file are reported once at
+herdr startup and by the `doctor` action.
+
+With `sort_by = "status"`, unpinned spaces are grouped by their most urgent
+agent: blocked, then done, working and idle, and spaces without agents last.
+Within each group the most recently focused space comes first. Spaces regroup
+whenever an agent changes status.
 
 ### Suggested keybindings
 
@@ -208,8 +221,20 @@ that has no name, or one whose current name border-collie set. Rename something
 yourself and border-collie leaves it alone from then on. To hand a tab back, rename
 it to a number.
 
+Names are refreshed when an agent changes status, is detected, exits or
+moves. herdr does not let plugins hook title changes on their own, so when an
+agent retitles itself without changing status, the new name appears at its
+next status change.
+
 When the last agent in a tab exits, a label border-collie set is returned to the
 tab's number, so tabs never keep describing work that is gone.
+
+## Multiple herdr sessions
+
+Space, tab and agent ids are only unique within one herdr session, so
+border-collie keeps pins and names separately for each session
+(`herdr --session <name>`). The default session uses the plugin's state
+directory; named sessions use `sessions/<name>/` inside it.
 
 ## How it works
 
@@ -219,7 +244,7 @@ Each run talks to herdr over its socket API and exits.
 | Command | Runs on | Effect |
 | --- | --- | --- |
 | `border-collie focused` | `workspace.focused` | Moves the focused space above the other unpinned spaces if it is still focused after `dwell_ms`. |
-| `border-collie name` | agent and pane events | Names tabs and agents. |
+| `border-collie name` | agent and pane events | Names tabs and agents, and regroups spaces when `sort_by = "status"`. |
 | `border-collie startup` | herdr startup | Does both immediately. |
 | `border-collie pin` | the `toggle-pin` action | Pins or unpins the current space. |
 | `border-collie next` | the `next-attention` action | Jumps to the next agent that needs attention. |

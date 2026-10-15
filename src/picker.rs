@@ -30,6 +30,8 @@ struct Row {
     focused: bool,
     status: String,
     space: String,
+    /// The agent's herdr name, which tells apart agents with the same title.
+    name: String,
     label: String,
 }
 
@@ -53,6 +55,7 @@ fn rows(agents: &[Value], spaces: &[Value]) -> Vec<Row> {
                     .unwrap_or("unknown")
                     .to_string(),
                 space: labels.get(space).copied().unwrap_or(space).to_string(),
+                name: agent["name"].as_str().unwrap_or("").to_string(),
                 label: label::subject(agent)
                     .or(agent["agent"].as_str())
                     .unwrap_or("agent")
@@ -124,9 +127,10 @@ const GUTTER: usize = 5;
 /// The text of a list line after the gutter, cut to fit `width` columns.
 fn format_row(row: &Row, width: usize) -> String {
     let text = format!(
-        " {:<8} {:<18} {}",
+        " {:<8} {:<18} {:<16} {}",
         row.status,
         label::truncate(&row.space, 18),
+        label::truncate(&row.name, 16),
         row.label
     );
     label::truncate(&text, width.saturating_sub(GUTTER))
@@ -260,7 +264,7 @@ fn read_key(input: &mut impl Read) -> io::Result<Key> {
 
 /// Runs the picker in the current terminal and focuses the chosen agent.
 pub fn run() -> Result<()> {
-    let agents = herdr::list("agent.list", "agents")?;
+    let agents = herdr::agents()?;
     let spaces = herdr::list("workspace.list", "workspaces")?;
     let rows = rows(&agents, &spaces);
 
@@ -399,6 +403,7 @@ mod tests {
             focused: false,
             status: "working".into(),
             space: "a-very-long-space-name-indeed".into(),
+            name: "alpha-2".into(),
             label: "A long title that will not fit".into(),
         };
         let line = format_row(&row, 40);

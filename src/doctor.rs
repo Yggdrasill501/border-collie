@@ -16,6 +16,7 @@ fn on_off(enabled: bool) -> &'static str {
 
 fn print_config(config: &Config) {
     println!("  sort_spaces    {}", on_off(config.sort_spaces));
+    println!("  sort_by        {}", config.sort_by.name());
     println!("  name_tabs      {}", on_off(config.name_tabs));
     println!("  name_agents    {}", on_off(config.name_agents));
     println!("  dwell_ms       {}", config.dwell_ms);

@@ -281,7 +281,7 @@
         </a>
         <a href="https://github.com/Yggdrasill501/border-collie#readme">Read the docs</a>
       </p>
-      <p class="meta">v0.5.0 · MIT · Linux and macOS · written in Rust</p>
+      <p class="meta">v0.6.0 · MIT · Linux and macOS · written in Rust</p>
     </div>
   </div>
 
@@ -350,7 +350,7 @@
         <li class="feature">
           <span class="num" aria-hidden="true">01</span>
           <h3>Recent spaces on top</h3>
-          <p>Switch to a space, stay a second, and it moves to the top. Without pins, space 1 is always the current one and space 2 the one you came from, so jumping back is always the same key.</p>
+          <p>Switch to a space, stay a second, and it moves to the top. Without pins, space 1 is always the current one and space 2 the one you came from, so jumping back is always the same key. Or set <code>sort_by = "status"</code> to put spaces with a blocked agent first.</p>
         </li>
         <li class="feature">
           <span class="num" aria-hidden="true">02</span>
@@ -450,12 +450,13 @@
           </button>
         </div>
         <pre tabindex="0" aria-label="border-collie configuration with default values"><code>sort_spaces   = true   <span class="c"># move the focused space to the top</span>
+sort_by       = "recent"  <span class="c"># or "status": spaces needing attention first</span>
 name_tabs     = true   <span class="c"># name tabs after their agents</span>
 name_agents   = true   <span class="c"># name agents after their work</span>
 dwell_ms      = 1000   <span class="c"># how long a space must stay focused before it moves</span>
 tab_label_max = 24     <span class="c"># longest tab label, in characters</span></code></pre>
       </div>
-      <p>Every line is optional; the values above are the defaults. Changes apply on the next hook run, with no reload.</p>
+      <p>Every line is optional; the values above are the defaults. Changes apply on the next hook run, with no reload. With <code>sort_by = "status"</code>, unpinned spaces are grouped by their most urgent agent (blocked, done, working, idle), most recently focused first within each group.</p>
     </div>
   </section>
 

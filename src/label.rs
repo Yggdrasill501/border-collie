@@ -51,11 +51,17 @@ pub fn slug(text: &str) -> String {
         } else if !slug.is_empty() && !slug.ends_with('-') {
             slug.push('-');
         }
-        if slug.len() == MAX_AGENT_NAME_CHARS {
-            break;
-        }
     }
-    slug.trim_end_matches('-').to_string()
+    let slug = slug.trim_end_matches('-');
+    if slug.len() <= MAX_AGENT_NAME_CHARS {
+        return slug.to_string();
+    }
+    // Too long: cut at the last word that fits, unless that leaves too little.
+    let head = &slug[..MAX_AGENT_NAME_CHARS];
+    match head.rfind('-') {
+        Some(end) if end >= MAX_AGENT_NAME_CHARS / 2 => head[..end].to_string(),
+        _ => head.trim_end_matches('-').to_string(),
+    }
 }
 
 #[cfg(test)]
@@ -134,6 +140,8 @@ mod tests {
         let name = slug("Turborepo Next Kysely monorepo with a very long title");
         assert!(name.len() <= MAX_AGENT_NAME_CHARS);
         assert!(!name.ends_with('-'));
-        assert_eq!(name, "turborepo-next-kysely-monorepo-w");
+        assert_eq!(name, "turborepo-next-kysely-monorepo");
+        let word = slug("Supercalifragilisticexpialidocious-and-more");
+        assert_eq!(word, "supercalifragilisticexpialidocio");
     }
 }

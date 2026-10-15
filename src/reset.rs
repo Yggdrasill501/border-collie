@@ -36,7 +36,7 @@ pub fn run() -> Result<()> {
     let store = Store::open()?;
     let state = store.load();
     let tabs = herdr::list("tab.list", "tabs")?;
-    let agents = herdr::list("agent.list", "agents")?;
+    let agents = herdr::agents()?;
 
     for (id, number) in tabs_to_restore(&tabs, &state) {
         match herdr::request(

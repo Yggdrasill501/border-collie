@@ -7,6 +7,7 @@ use std::time::Duration;
 
 use serde_json::json;
 
+use crate::config::{self, SortBy};
 use crate::herdr::{self, Result};
 use crate::state::Store;
 
@@ -14,6 +15,8 @@ struct Space {
     id: String,
     label: String,
     focused: bool,
+    /// The most urgent status of the space's agents.
+    status: String,
 }
 
 fn spaces() -> Result<Vec<Space>> {
@@ -25,6 +28,7 @@ fn spaces() -> Result<Vec<Space>> {
                 id: space["workspace_id"].as_str()?.to_string(),
                 label: space["label"].as_str().unwrap_or("").to_string(),
                 focused: space["focused"] == true,
+                status: space["agent_status"].as_str().unwrap_or("").to_string(),
             })
         })
         .collect())
@@ -70,10 +74,36 @@ fn moves<'a>(current: &[&'a str], desired: &[&'a str]) -> Vec<(&'a str, usize)> 
     moves
 }
 
+/// Lower comes first: spaces with an agent waiting on you, then finished,
+/// then working, then the rest.
+fn urgency(status: &str) -> u8 {
+    match status {
+        "blocked" => 0,
+        "done" => 1,
+        "working" => 2,
+        "idle" => 3,
+        _ => 4,
+    }
+}
+
+/// Groups the unpinned spaces of `order` by urgency, keeping their order
+/// within each group.
+fn group_by_status(order: &mut [&str], pinned: usize, status: impl Fn(&str) -> u8) {
+    let start = pinned.min(order.len());
+    order[start..].sort_by_key(|id| status(id));
+}
+
 /// Reorders spaces to match the pins, promoting `recent` if given.
-fn arrange(spaces: &[Space], pins: &[String], recent: Option<&str>) -> Result<()> {
+fn arrange(spaces: &[Space], pins: &[String], recent: Option<&str>, sort_by: SortBy) -> Result<()> {
     let current: Vec<&str> = spaces.iter().map(|space| space.id.as_str()).collect();
-    let desired = desired_order(&current, pins, recent);
+    let mut desired = desired_order(&current, pins, recent);
+    if sort_by == SortBy::Status {
+        let status = |id: &str| {
+            let space = spaces.iter().find(|space| space.id == id);
+            urgency(space.map_or("", |space| space.status.as_str()))
+        };
+        group_by_status(&mut desired, pins.len(), status);
+    }
     for (id, index) in moves(&current, &desired) {
         herdr::request(
             "workspace.move",
@@ -94,7 +124,7 @@ fn live_pins(pins: &[String], spaces: &[Space]) -> Vec<String> {
 
 /// Moves the focused space up if it is still focused after `dwell`, so
 /// spaces passed through while navigating are not reshuffled.
-pub fn promote_focused(dwell: Duration) -> Result<()> {
+pub fn promote_focused(dwell: Duration, sort_by: SortBy) -> Result<()> {
     let before = spaces()?;
     let Some(before) = focused_id(&before) else {
         return Ok(());
@@ -105,7 +135,15 @@ pub fn promote_focused(dwell: Duration) -> Result<()> {
     let spaces = spaces()?;
     let pins = live_pins(&store.load().pins, &spaces);
     let recent = focused_id(&spaces).filter(|id| *id == before);
-    arrange(&spaces, &pins, recent)
+    arrange(&spaces, &pins, recent, sort_by)
+}
+
+/// Regroups spaces after an agent's status changed, for `sort_by = "status"`.
+pub fn regroup() -> Result<()> {
+    let store = Store::open()?;
+    let spaces = spaces()?;
+    let pins = live_pins(&store.load().pins, &spaces);
+    arrange(&spaces, &pins, None, SortBy::Status)
 }
 
 fn notify(title: &str) {
@@ -141,7 +179,7 @@ pub fn toggle_pin() -> Result<()> {
     };
     state.pins = pins;
     store.save(&state)?;
-    arrange(&spaces, &state.pins, None)?;
+    arrange(&spaces, &state.pins, None, config::load().sort_by)?;
     notify(&message);
     Ok(())
 }
@@ -214,6 +252,21 @@ mod tests {
         let current = ["a", "b"];
         let pinned = pins(&["gone"]);
         assert_eq!(desired_order(&current, &pinned, Some("missing")), current);
+    }
+
+    #[test]
+    fn status_groups_unpinned_spaces_keeping_recent_order() {
+        let mut order = ["pin", "a", "b", "c", "d"];
+        let status = |id: &str| match id {
+            "b" | "pin" => urgency("idle"),
+            "c" => urgency("blocked"),
+            "d" => urgency("working"),
+            _ => urgency("done"),
+        };
+        group_by_status(&mut order, 1, status);
+        assert_eq!(order, ["pin", "c", "a", "d", "b"]);
+        assert!(urgency("blocked") < urgency("done"));
+        assert!(urgency("idle") < urgency(""));
     }
 
     #[test]

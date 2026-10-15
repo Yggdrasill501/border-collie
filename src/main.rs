@@ -35,9 +35,19 @@ commands:
 
 fn sort_spaces(config: &Config, dwell: Duration) -> herdr::Result<()> {
     if config.sort_spaces {
-        spaces::promote_focused(dwell)?;
+        spaces::promote_focused(dwell, config.sort_by)?;
     }
     Ok(())
+}
+
+/// Runs on agent events: names tabs and agents, and regroups spaces when
+/// they are sorted by status.
+fn on_agent_event(config: &Config) -> herdr::Result<()> {
+    let named = name(config);
+    if config.sort_spaces && config.sort_by == config::SortBy::Status {
+        spaces::regroup()?;
+    }
+    named
 }
 
 fn name(config: &Config) -> herdr::Result<()> {
@@ -47,7 +57,7 @@ fn name(config: &Config) -> herdr::Result<()> {
     let store = state::Store::open()?;
     let mut state = store.load();
     let before = state.clone();
-    let agents = herdr::list("agent.list", "agents")?;
+    let agents = herdr::agents()?;
 
     let tabs = if config.name_tabs {
         tabs::rename_all(&agents, config.tab_label_max, &mut state.tabs)
@@ -79,7 +89,7 @@ fn run(command: &str) -> herdr::Result<()> {
             let config = config::load();
             sort_spaces(&config, Duration::from_millis(config.dwell_ms))
         }
-        "name" => name(&config::load()),
+        "name" => on_agent_event(&config::load()),
         "pin" => spaces::toggle_pin(),
         "pins" => spaces::list_pins(),
         "next" => attention::jump(),
@@ -88,9 +98,10 @@ fn run(command: &str) -> herdr::Result<()> {
         "doctor" => doctor::run(),
         "open-picker" => picker::open(),
         "startup" => {
+            config::warn();
             let config = config::load();
             let sorted = sort_spaces(&config, Duration::ZERO);
-            name(&config).and(sorted)
+            on_agent_event(&config).and(sorted)
         }
         "" => Err(USAGE.into()),
         other => Err(format!("unknown command `{other}`\n{USAGE}").into()),

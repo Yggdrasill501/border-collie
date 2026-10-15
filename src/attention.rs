@@ -32,7 +32,7 @@ fn next(agents: &[Value]) -> Option<&Value> {
 }
 
 pub fn jump() -> Result<()> {
-    let agents = herdr::list("agent.list", "agents")?;
+    let agents = herdr::agents()?;
     let Some(agent) = next(&agents) else {
         let _ = herdr::request(
             "notification.show",
